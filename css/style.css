@@ -1,0 +1,93 @@
+html,
+body {
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    font-family: "Roboto", "Arial";
+}
+
+h1 {
+    margin: 0;
+    padding: 0;
+    font-size: 24px;
+}
+
+.hbox {
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-align-content: flex-start;
+    -ms-flex-line-pack: start;
+    align-content: flex-start;
+}
+
+.vbox {
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    -webkit-align-content: flex-start;
+    -ms-flex-line-pack: start;
+    align-content: flex-start;
+}
+
+.flex {
+    -webkit-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+}
+
+.container {
+    width: 100%;
+    height: 100%;
+}
+
+.header {
+    height: 50px;
+    background: #00BCD4;
+}
+
+.header h1 {
+    color: #ffffff;
+    margin: 6px 10px;
+}
+
+.sidebar {
+    width: 150px;
+    background: #374046;
+}
+
+.tampungan {
+    padding: 20px;
+}
+
+ul.menu {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+ul.menu > li > a {
+    display: block;
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 14px;
+    padding: 10px;
+}
+
+ul.menu > li > a:hover {
+    background: #607D8B;
+}
+
+ul.menu > li + li a {
+    border-top: solid 1px #3A4A54;
+}
