@@ -24,7 +24,7 @@ return array(
 		'user' => 'root',
 		'pass' => 'secret',
 		'name' => 'test',
-		'load' => false
+		'load' => true
 	)
 
 );

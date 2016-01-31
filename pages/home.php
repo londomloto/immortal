@@ -1,3 +1,2 @@
-<h1>Welcome, John</h1>
-
-<p>This is your administration page</p>
+<h2>Welcome, John</h2>
+<p>Page content goes here</p>
