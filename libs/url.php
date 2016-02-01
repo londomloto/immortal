@@ -29,7 +29,7 @@ function site_url($uri) {
 	$index  = get_config('index');
 	$suffix = get_config('suffix');
 
-	if ( ! preg_match('|'.$suffix.'$|', $uri)) {
+	if ( $uri != '/' && ! preg_match('|'.$suffix.'$|', $uri)) {
 		$uri .= $suffix;
 	}
 
@@ -54,4 +54,12 @@ function uri_segment($index = 0) {
 /** common url helper */
 function asset_url($path) {
 	return base_url().'assets/'.$path;
+}
+
+function redirect($url) {
+	if ( ! preg_match('/^http/', $url)) {
+		$url = site_url($url);
+	}
+	header('Location: '.$url);
+	exit();
 }

@@ -387,19 +387,22 @@
 
             // Fullscreen
             // ==========
-            $(document).on('click', '[data-toggle="fullscreen"]', function() {
-                if (screenfull.enabled) {
-                    screenfull.toggle();
-                }
+            if (window['screenfull']) {
+                $(document).on('click', '[data-toggle="fullscreen"]', function() {
+                    if (screenfull.enabled) {
+                        screenfull.toggle();
+                    }
 
-                return false;
-            });
-
-            if (screenfull.enabled) {
-                document.addEventListener(screenfull.raw.fullscreenchange, function() {
-                    $('[data-toggle="fullscreen"]').toggleClass('active', screenfull.isFullscreen);
+                    return false;
                 });
+
+                if (screenfull.enabled) {
+                    document.addEventListener(screenfull.raw.fullscreenchange, function() {
+                        $('[data-toggle="fullscreen"]').toggleClass('active', screenfull.isFullscreen);
+                    });
+                }    
             }
+            
 
             // Dropdown menu setup
             // ===================
@@ -603,13 +606,17 @@
             api: null,
 
             init: function() {
-                this.api = $.site.menubar.$instance.children('.site-menubar-body').asScrollable({
-                    namespace: 'scrollable',
-                    skin: 'scrollable-inverse',
-                    direction: 'vertical',
-                    contentSelector: '>',
-                    containerSelector: '>'
-                }).data('asScrollable');
+
+                if ($.fn.asScrollable) {
+                    this.api = $.site.menubar.$instance.children('.site-menubar-body').asScrollable({
+                        namespace: 'scrollable',
+                        skin: 'scrollable-inverse',
+                        direction: 'vertical',
+                        contentSelector: '>',
+                        containerSelector: '>'
+                    }).data('asScrollable');    
+                }
+
             },
 
             update: function() {
@@ -638,22 +645,29 @@
             api: null,
 
             init: function() {
-                this.api = $.site.menubar.$instance.children('.site-menubar-body').asHoverScroll({
-                    namespace: 'hoverscorll',
-                    direction: 'vertical',
-                    list: '.site-menu',
-                    item: '> li',
-                    exception: '.site-menu-sub',
-                    fixed: false,
-                    boundary: 60,
-                    onEnter: function() {
-                        //$(this).siblings().removeClass('hover');
-                        //$(this).addClass('hover');
-                    },
-                    onLeave: function() {
-                        //$(this).removeClass('hover');
-                    }
-                }).data('asHoverScroll');
+
+                if ($.fn.asHoverScroll) {
+
+                    this.api = $.site.menubar.$instance.children('.site-menubar-body').asHoverScroll({
+                        namespace: 'hoverscorll',
+                        direction: 'vertical',
+                        list: '.site-menu',
+                        item: '> li',
+                        exception: '.site-menu-sub',
+                        fixed: false,
+                        boundary: 60,
+                        onEnter: function() {
+                            //$(this).siblings().removeClass('hover');
+                            //$(this).addClass('hover');
+                        },
+                        onLeave: function() {
+                            //$(this).removeClass('hover');
+                        }
+                    }).data('asHoverScroll');
+
+                }
+
+                
             },
 
             update: function() {

@@ -3,8 +3,6 @@ $(document).ready(function(){
 
 	var lastURL;
 
-	
-
 	$(document).on('click', 'a[data-push]', function(e){
 
 		e.preventDefault();
@@ -33,7 +31,10 @@ $(document).ready(function(){
 	});
 
 	function load(page) {
-		$('.page-content').load(page);
+		// $('.page').mask();
+		$('.page-content').load(page, function(){
+			// $('.page').unmask();
+		});
 	}
 
 	Site.run();

@@ -23,7 +23,7 @@ return array(
 		'host' => 'localhost',
 		'user' => 'root',
 		'pass' => 'secret',
-		'name' => 'test',
+		'name' => 'immortal',
 		'load' => true
 	)
 

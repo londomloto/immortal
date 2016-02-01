@@ -30,18 +30,36 @@ function start() {
 	
 	set_var('uri', $uri);
 
-	$page = uri_segment(0);
+	$module = uri_segment(0);
+	$layout = 'main.php';
 
 	if ($uri == '/') {
-		$page = get_config('default');
+		$module = get_config('default');
 	}
 
-	set_var('page', $page);
+	set_var('module', $module);
 
-	if ( $page != '') {
+	if ( $module != '') {
 		
-		$page = BASEPATH.'pages/'.$page.'.php';
+		$module = BASEPATH.'modules/'.$module.'/';
 		
+		if (is_dir($module)) {
+			if (file_exists($module.'config.php')) {
+				$modcfg = include($module.'config.php');
+				if (isset($modcfg['layout'])) {
+					$layout = $modcfg['layout'].'.php';
+				}
+			}
+		}
+
+		$page = uri_segment(1);
+
+		if (empty($page) || ! file_exists($module.$page.'.php')) {
+			$page = get_var('module');
+		}
+
+		$page = $module.$page.'.php';
+
 		if (file_exists($page)) {
 			ob_start();
 			include($page);
@@ -50,9 +68,9 @@ function start() {
 		}
 
 	}
-	
+
 	if ( ! is_ajax()) {
-		include(BASEPATH.'pages/layout.php');
+		include(BASEPATH.'layouts/'.$layout);
 	} else {
 		echo get_content();
 	}

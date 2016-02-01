@@ -4,7 +4,7 @@ function db_start() {
 
 	$config = get_config('database');
 
-	$db = mysqli_connect(
+	$db = @mysqli_connect(
 		$config->host,
 		$config->user,
 		$config->pass,
@@ -12,11 +12,10 @@ function db_start() {
 	);
 
 	if (mysqli_connect_errno()) {
-		echo 'Failed to connect to database '.mysqli_connect_error();
-		exit();
+		db_set_error(mysqli_connect_error());
+	} else {
+		set_var('db', $db);
 	}
-
-	set_var('db', $db);
 }
 
 function db_stop() {
@@ -29,9 +28,56 @@ function db_stop() {
 
 }
 
-function db_query($sql) {
+function db_escape($value) {
 	$db = get_var('db');
-	$query = mysqli_query($db, $sql);
+	return mysqli_real_escape_string($db, stripslashes($value));
+}
+
+function db_query($sql, $bind = array()) {
+	$db = get_var('db');
+
+	$query = false;
+
+	if (count($bind) > 0) {
+
+		$stmt = mysqli_stmt_init($db);
+
+		if ( ! mysqli_stmt_prepare($stmt, $sql)) {
+			db_set_error("Failed to prepare statement");
+		} else {
+			
+			foreach($bind as $value) {
+
+				// clean and let binder take over
+				$value = stripslashes($value);
+
+				$btype = 's';
+				
+				if (is_numeric($value)) {
+					$btype = 'i';
+					$float = floatval($value);
+					if ($float && intval($float) != $float) {
+						$btype = 'd';
+					}
+				}
+				
+				if ( ! mysqli_stmt_bind_param($stmt, $btype, $value)) {
+					db_set_error("Failed to bind param $value");
+				}
+			}
+
+			if (mysqli_stmt_execute($stmt)) {
+				$query = mysqli_stmt_get_result($stmt);	
+			}
+
+		}
+
+		mysqli_stmt_close($stmt);
+
+	} else {
+		$query = mysqli_query($db, $sql);	
+	}
+	
 	return $query;
 }
 
@@ -43,7 +89,7 @@ function db_fetch_all($sql) {
 	$query = db_query($sql);
 	$data  = array();
 	if ($query) {
-		while($row = mysqli_fetch_object($query)) {
+		while($row = mysqli_fetch_array($query, MYSQLI_ASSOC)) {
 			$data[] = $row;
 		}
 		db_free_result($query);
@@ -51,11 +97,11 @@ function db_fetch_all($sql) {
 	return $data;
 }
 
-function db_fetch_one($sql) {
-	$query = db_query($sql);
+function db_fetch_one($sql, $bind = array()) {
+	$query = db_query($sql, $bind);
 	$data  = null;
 	if ($query) {
-		$data = mysqli_fetch_object($query);
+		$data = mysqli_fetch_array($query, MYSQLI_ASSOC);
 		db_free_result($query);
 	}
 	return $data;	
@@ -66,7 +112,7 @@ function db_list_tables() {
 	$dbname = get_config('database')->name;
 	return array_map(
 		function($row) use($dbname) { 
-			return $row->{"Tables_in_$dbname"}; 
+			return $row["Tables_in_$dbname"]; 
 		}, 
 		$tables
 	);
@@ -77,13 +123,28 @@ function db_field_data($table) {
 	$result = array();
 
 	foreach($fields as $fld) {
-		$row = new stdClass();
+		$row = array();
 
-		$row->type = preg_replace('/(\(.*\))/', '', $fld->Type);
-		$row->name = $fld->Field;
-		$row->primary  = $fld->Key == 'PRI';
+		$row['type'] = preg_replace('/(\(.*\))/', '', $fld['Type']);
+		$row['name'] = $fld['Field'];
+		$row['primary'] = $fld['Key'] == 'PRI';
 
 		$result[] = $row;
 	}
 	return $result;
+}
+
+function &db_errors() {
+	static $errors = [];
+	return $errors;
+}
+
+function db_set_error($message) {
+	$errors =& db_errors();
+	$errors[] = $message;
+}
+
+function db_get_errors() {
+	$errors =& db_errors();
+	return $errors;
 }
