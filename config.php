@@ -12,7 +12,7 @@ return array(
 
 	'default' => 'login',
 	
-	'suffix'  => '.me',
+	'suffix'  => '.xyz',
 
 	'autoload' => array(
 		'database',
