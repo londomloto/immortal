@@ -2,8 +2,6 @@
 	
 	$post = get_post();
 	
-	$user = db_fetch_one('SELECT * FROM users WHERE email = ?', array($post['email']));
-
 	$result = array(
 		'success' => false,
 		'message' => 'Invalid email address or password'
@@ -32,6 +30,9 @@
 			set_session('login_timer', microtime(true));
 		}
 	} else {
+		
+		$user = db_fetch_one('SELECT * FROM users WHERE email = ?', array($post['email']));
+
 		if ($user && password_verify($post['password'], $user['passwd'])) {
 			$result['success'] = true;
 			$result['message'] = '';
