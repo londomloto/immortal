@@ -3,6 +3,7 @@
 function db_start() {
 
 	$config = get_config('database');
+	$retval = false;
 
 	$db = @mysqli_connect(
 		$config->host,
@@ -15,21 +16,21 @@ function db_start() {
 		db_set_error(mysqli_connect_error());
 	} else {
 		if ( ! mysqli_set_charset($db, 'utf8')) {
-			db_set_error(mysqli_erorr($db));
+			db_set_error(mysqli_error($db));
 		} else {
-			set_var('db', $db);	
+			set_var('db', $db);
+			$retval = true;
 		}
 	}
+
+	return $retval;
 }
 
 function db_stop() {
-	
 	$db = get_var('db');
-
 	if ($db) {
 		mysqli_close($db);
 	}
-
 }
 
 function db_escape($value) {
@@ -41,65 +42,52 @@ function db_query($sql, $bind = array()) {
 	$db = get_var('db');
 
 	$query = false;
-	$dml   = ! preg_match('/^SELECT/i', trim($sql));
+	$stmt  = mysqli_stmt_init($db);
 
-	if (count($bind) > 0) {
+	if (mysqli_stmt_prepare($stmt, $sql)) {
 
-		$stmt = mysqli_stmt_init($db);
+		if (count($bind) > 0) {
 
-		if ( ! mysqli_stmt_prepare($stmt, $sql)) {
-			db_set_error("Failed to prepare statement for query $sql");
-		} else {
-			
 			$types  = '';
 			$values = array();
 
 			foreach($bind as $key => &$value) {
-
 				$value = stripslashes($value);
-
 				if (is_numeric($value)) {
-					$float = floatval($value);
-					if ($float && intval($float) != $float) {
-						$types .= 'd';
-					} else {
-						$types .= 'i';
-					}
+					$float  = floatval($value);
+					$types .= ($float && intval($float) != $float) ? 'd' : 'i';
 				} else {
 					$types .= 's';
 				}
-
 				$values[$key] = &$bind[$key];
-
 			}
 
-			$params  = array_merge(array($stmt, $types), $bind);
-			$success = call_user_func_array('mysqli_stmt_bind_param', $params);
-
-			if ( ! $success) {
-				db_set_error("Failed to bind param $value");
-			}
+			$params = array_merge(array($stmt, $types), $bind);
 			
-			if (mysqli_stmt_execute($stmt)) {
-				$query = mysqli_stmt_get_result($stmt);
+			set_error_handler('db_error_handler');
+
+			try {
+				call_user_func_array('mysqli_stmt_bind_param', $params);
+			} catch(Exception $e) {
+				db_set_error($e->getMessage());
 			}
+
+			restore_error_handler();
+
+		}
+
+		if (mysqli_stmt_execute($stmt)) {
+			$query = (preg_match('/^(SELECT|SHOW)/i', $sql)) ? mysqli_stmt_get_result($stmt) : true;
+		} else {
+			db_set_error(mysqli_error($db));
 		}
 
 		mysqli_stmt_close($stmt);
 
 	} else {
-		$query = mysqli_query($db, $sql);	
+		db_set_error(mysqli_error($db));
 	}
 
-	if ($dml) {
-		if (($error = mysqli_error($db))) {
-			$query = false;
-			db_set_error($error);
-		} else {
-			$query = true;
-		}
-	}
-	
 	return $query;
 }
 
@@ -107,8 +95,8 @@ function db_free_result($result) {
 	mysqli_free_result($result);
 }
 
-function db_fetch_all($sql) {
-	$query = db_query($sql);
+function db_fetch_all($sql, $bind = array()) {
+	$query = db_query($sql, $bind);
 	$data  = array();
 	if ($query) {
 		while($row = mysqli_fetch_array($query, MYSQLI_ASSOC)) {
@@ -154,6 +142,10 @@ function db_field_data($table) {
 		$result[] = $row;
 	}
 	return $result;
+}
+
+function db_error_handler($no, $msg, $file, $line) {
+	throw new Exception(sprintf('%s (%s:%d)', $msg, $file, $line), $no);
 }
 
 function &db_errors() {
