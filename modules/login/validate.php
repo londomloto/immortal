@@ -5,7 +5,7 @@
 	// atau lebih aman...
 	
 	$user = db_fetch_one('SELECT * FROM users WHERE email = ?', array($post['email']));
-
+	
 	$result = array(
 		'success' => false,
 		'message' => 'Invalid email address or password'

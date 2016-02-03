@@ -1,5 +1,16 @@
 <?php
 
+function protocol() {
+	static $protocol;
+	if ( ! $protocol) {
+		$protocol = 
+			(! empty($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) !== 'off') || $_SERVER['SERVER_PORT'] == 443 
+			? 'https://'
+			: 'http://';
+	}
+	return $protocol;
+}
+
 function base_uri() {
 	static $base;
 	if (empty($base)) {
@@ -18,7 +29,7 @@ function base_uri() {
 function base_url() {
 	static $base;
 	if (empty($base)) {
-		$base = 'http://'.$_SERVER['HTTP_HOST'].base_uri();
+		$base = protocol().$_SERVER['HTTP_HOST'].base_uri();
 	}
 	return $base;
 }

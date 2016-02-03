@@ -70,11 +70,11 @@ if (has_session('user')) {
                         <input type="checkbox" id="inputCheckbox" name="checkbox">
                         <label for="inputCheckbox">Remember me</label>
                     </div>
-                    <a class="pull-right" href="forgot-password.html">Forgot password?</a>
+                    <a class="pull-right" href="#">Forgot password?</a>
                 </div>
                 <button type="submit" class="btn btn-primary btn-block">Sign in</button>
             </form>
-            <p>Still no account? Please go to <a href="register.html">Register</a></p>
+            <p>Still no account? Please go to <a href="#">Register</a></p>
 
         </div>
     </div>
