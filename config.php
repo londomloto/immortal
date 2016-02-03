@@ -12,7 +12,7 @@ return array(
 
 	'default' => 'login',
 	
-	'suffix'  => '.aspx',
+	'suffix'  => '.me',
 
 	'autoload' => array(
 		'database',

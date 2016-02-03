@@ -29,7 +29,7 @@ function site_url($uri) {
 	$index  = get_config('index');
 	$suffix = get_config('suffix');
 
-	if ( $uri != '/' && ! preg_match('|'.$suffix.'$|', $uri)) {
+	if ( $uri != '/' && ! preg_match('/\\'.$suffix.'$/', $uri)) {
 		$uri .= $suffix;
 	}
 
@@ -45,7 +45,7 @@ function uri_segments() {
 	$suf = get_config('suffix');
 
 	$uri = trim(get_var('uri'), '/');
-	$uri = preg_replace('|('.$suf.')$|', '', $uri);
+	$uri = preg_replace('/(\\'.$suf.')$/', '', $uri);
 	$seg = explode('/', $uri);
 
 	return $seg;
