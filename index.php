@@ -75,12 +75,6 @@ function start() {
 				}
 				$curr = array_pop($segments);
 			}
-			
-			$path = implode('/', $segments);
-			
-			if (file_exists($module.$path.'.php')) {
-				$page = $path;
-			}
 
 			if (empty($page) || ! file_exists($module.$page.'.php')) {
 				$page = get_var('module');
