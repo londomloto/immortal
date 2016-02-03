@@ -7,6 +7,7 @@ define('BASEPATH', __DIR__.DS);
 include('libs/common.php');
 include('libs/output.php');
 include('libs/url.php');
+include('libs/asset.php');
 
 load_config();
 load_libraries();
@@ -15,6 +16,7 @@ function start() {
 
 	$url = parse_url($_SERVER['REQUEST_URI']);
 	$uri = isset($url['path']) ? $url['path'] : '';
+	$qry = isset($url['query']) ? $url['query'] : '';
 
 	$svc = $_SERVER['SCRIPT_NAME'];
 
@@ -29,9 +31,10 @@ function start() {
 	}
 	
 	set_var('uri', $uri);
+	set_var('qry', $qry);
 
-	$module = uri_segment(0);
-	$layout = 'main.php';
+	$segments = uri_segments();
+	$module   = isset($segments[0]) ? $segments[0] : '';
 
 	if ($uri == '/') {
 		$module = get_config('default');
@@ -39,32 +42,59 @@ function start() {
 
 	set_var('module', $module);
 
+	$layout = 'main.php';
+
 	if ( $module != '') {
 		
 		$module = BASEPATH.'modules/'.$module.'/';
 		
 		if (is_dir($module)) {
+
 			if (file_exists($module.'config.php')) {
+				
 				$modcfg = include($module.'config.php');
+
 				if (isset($modcfg['layout'])) {
 					$layout = $modcfg['layout'].'.php';
 				}
+
+				if (isset($modcfg['script'])) {
+					add_script($modcfg['script']);
+				}
+				
 			}
-		}
 
-		$page = uri_segment(1);
+			$page = array_shift($segments);
 
-		if (empty($page) || ! file_exists($module.$page.'.php')) {
-			$page = get_var('module');
-		}
+			// crawl extra path
+			while(count($segments) > 0) {
+				$path = implode('/', $segments);
+				if (file_exists($module.$path.'.php')) {
+					$page = $path;
+					break;
+				}
+				$curr = array_pop($segments);
+			}
+			
+			$path = implode('/', $segments);
+			
+			if (file_exists($module.$path.'.php')) {
+				$page = $path;
+			}
 
-		$page = $module.$page.'.php';
+			if (empty($page) || ! file_exists($module.$page.'.php')) {
+				$page = get_var('module');
+			}
 
-		if (file_exists($page)) {
-			ob_start();
-			include($page);
-			set_content(ob_get_contents());
-			ob_end_clean();
+			$page = $module.$page.'.php';
+
+			if (file_exists($page)) {
+				ob_start();
+				include($page);
+				set_content(ob_get_contents());
+				ob_end_clean();
+			}
+
 		}
 
 	}

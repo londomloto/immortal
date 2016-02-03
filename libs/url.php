@@ -24,7 +24,7 @@ function base_url() {
 }
 
 function site_url($uri) {
-
+	
 	$site   = base_url();
 	$index  = get_config('index');
 	$suffix = get_config('suffix');
@@ -41,13 +41,18 @@ function site_url($uri) {
 	return $site;
 }
 
-function uri_segment($index = 0) {
+function uri_segments() {
 	$suf = get_config('suffix');
 
 	$uri = trim(get_var('uri'), '/');
 	$uri = preg_replace('|('.$suf.')$|', '', $uri);
 	$seg = explode('/', $uri);
 
+	return $seg;
+}
+
+function uri_segment($index = 0) {
+	$seg = uri_segments();
 	return isset($seg[$index]) ? $seg[$index] : '';
 }
 

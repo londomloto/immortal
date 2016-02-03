@@ -1,6 +1,6 @@
 <?php
 if (has_session('user')) {
-    redirect('/');
+    redirect('home');
 }
 ?>
 <!DOCTYPE html>
@@ -49,7 +49,6 @@ if (has_session('user')) {
 
 <body class="page-login layout-full">
 
-    <!-- Page -->
     <div class="page vertical-align text-center" data-animsition-in="fade-in" data-animsition-out="fade-out">>
         <div class="page-content vertical-align-middle">
             <div class="brand">

@@ -14,7 +14,11 @@ function db_start() {
 	if (mysqli_connect_errno()) {
 		db_set_error(mysqli_connect_error());
 	} else {
-		set_var('db', $db);
+		if ( ! mysqli_set_charset($db, 'utf8')) {
+			db_set_error(mysqli_erorr($db));
+		} else {
+			set_var('db', $db);	
+		}
 	}
 }
 
@@ -37,45 +41,63 @@ function db_query($sql, $bind = array()) {
 	$db = get_var('db');
 
 	$query = false;
+	$dml   = ! preg_match('/^SELECT/i', trim($sql));
 
 	if (count($bind) > 0) {
 
 		$stmt = mysqli_stmt_init($db);
 
 		if ( ! mysqli_stmt_prepare($stmt, $sql)) {
-			db_set_error("Failed to prepare statement");
+			db_set_error("Failed to prepare statement for query $sql");
 		} else {
 			
-			foreach($bind as $value) {
+			$types  = '';
+			$values = array();
 
-				// clean and let binder take over
+			foreach($bind as $key => &$value) {
+
 				$value = stripslashes($value);
 
-				$btype = 's';
-				
 				if (is_numeric($value)) {
-					$btype = 'i';
 					$float = floatval($value);
 					if ($float && intval($float) != $float) {
-						$btype = 'd';
+						$types .= 'd';
+					} else {
+						$types .= 'i';
 					}
+				} else {
+					$types .= 's';
 				}
-				
-				if ( ! mysqli_stmt_bind_param($stmt, $btype, $value)) {
-					db_set_error("Failed to bind param $value");
-				}
+
+				$values[$key] = &$bind[$key];
+
 			}
 
+			$params  = array_merge(array($stmt, $types), $bind);
+			$success = call_user_func_array('mysqli_stmt_bind_param', $params);
+
+			if ( ! $success) {
+				db_set_error("Failed to bind param $value");
+			}
+			
 			if (mysqli_stmt_execute($stmt)) {
-				$query = mysqli_stmt_get_result($stmt);	
+				$query = mysqli_stmt_get_result($stmt);
 			}
-
 		}
 
 		mysqli_stmt_close($stmt);
 
 	} else {
 		$query = mysqli_query($db, $sql);	
+	}
+
+	if ($dml) {
+		if (($error = mysqli_error($db))) {
+			$query = false;
+			db_set_error($error);
+		} else {
+			$query = true;
+		}
 	}
 	
 	return $query;

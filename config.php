@@ -10,7 +10,7 @@ return array(
 
 	'index'   => '',
 
-	'default' => 'home',
+	'default' => 'login',
 	
 	'suffix'  => '.aspx',
 

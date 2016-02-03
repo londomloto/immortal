@@ -14,12 +14,12 @@
     <link rel="stylesheet" type="text/css" href="<?php echo asset_url('vendor/bootstrap/css/bootstrap-extend.css'); ?>">
     <link rel="stylesheet" type="text/css" href="<?php echo asset_url('vendor/asscrollable/asScrollable.css'); ?>">
     <link rel="stylesheet" type="text/css" href="<?php echo asset_url('vendor/loadmask/loadmask.css'); ?>">
-    <link rel="stylesheet" type="text/css" href="<?php echo asset_url('vendor/datatable/jquery.dataTables.css'); ?>">
-    <link rel="stylesheet" type="text/css" href="<?php echo asset_url('vendor/datatable/dataTables.responsive.css'); ?>">
     
     <link rel="stylesheet" type="text/css" href="<?php echo asset_url('fonts/roboto/roboto.css'); ?>">
     <link rel="stylesheet" type="text/css" href="<?php echo asset_url('fonts/web-icons/web-icons.css'); ?>">
     <link rel="stylesheet" type="text/css" href="<?php echo asset_url('css/style.css'); ?>">
+    <link rel="stylesheet" type="text/css" href="<?php echo asset_url('css/jquery.dataTables.css'); ?>">
+    <link rel="stylesheet" type="text/css" href="<?php echo asset_url('css/dataTables.responsive.css'); ?>">
 
     <script src="<?php echo asset_url('vendor/modernizr/modernizr.js'); ?>"></script>
     <script src="<?php echo asset_url('vendor/breakpoints/breakpoints.js'); ?>"></script>
@@ -206,22 +206,6 @@
         </ul>
     </div>
 
-    <script src="<?php echo asset_url('vendor/jquery/jquery.js'); ?>"></script>
-    <script src="<?php echo asset_url('vendor/bootstrap/js/bootstrap.js'); ?>"></script>
-    <script src="<?php echo asset_url('vendor/asscroll/jquery-asScroll.js'); ?>"></script>
-    <script src="<?php echo asset_url('vendor/mousewheel/jquery.mousewheel.js'); ?>"></script>
-    <script src="<?php echo asset_url('vendor/asscrollable/jquery.asScrollable.all.js'); ?>"></script>
-    <script src="<?php echo asset_url('vendor/ashoverscroll/jquery-asHoverScroll.js'); ?>"></script>
-    <script src="<?php echo asset_url('vendor/screenfull/screenfull.js'); ?>"></script>
-    <script src="<?php echo asset_url('vendor/loadmask/loadmask.js'); ?>"></script>
-    <script src="<?php echo asset_url('vendor/datatable/jquery.dataTables.js'); ?>"></script>
-    <script src="<?php echo asset_url('vendor/datatable/dataTables.responsive.min.js'); ?>"></script>
-    
-    
-    <script src="<?php echo asset_url('js/core.js'); ?>"></script>
-    <script src="<?php echo asset_url('js/script.js'); ?>"></script>
-    <script src="<?php echo asset_url('js/components/asscrollable.js'); ?>"></script>
-
     <div class="page">
         <div class="page-content">
             <?php echo get_content(); ?>
@@ -234,6 +218,26 @@
             crafted with <i class="red-600 wb wb-heart"></i> by <a href="http://supernova.xyz/">supernova</a>
         </div>
     </footer>
+
+    <script src="<?php echo asset_url('vendor/jquery/jquery.js'); ?>"></script>
+    <script src="<?php echo asset_url('vendor/bootstrap/js/bootstrap.js'); ?>"></script>
+    <script src="<?php echo asset_url('vendor/asscroll/jquery-asScroll.js'); ?>"></script>
+    <script src="<?php echo asset_url('vendor/mousewheel/jquery.mousewheel.js'); ?>"></script>
+    <script src="<?php echo asset_url('vendor/asscrollable/jquery.asScrollable.all.js'); ?>"></script>
+    <script src="<?php echo asset_url('vendor/ashoverscroll/jquery-asHoverScroll.js'); ?>"></script>
+    <script src="<?php echo asset_url('vendor/screenfull/screenfull.js'); ?>"></script>
+    <script src="<?php echo asset_url('vendor/loadmask/loadmask.js'); ?>"></script>
+    
+    
+    <script src="<?php echo asset_url('js/core.js'); ?>"></script>
+    <script src="<?php echo asset_url('js/script.js'); ?>"></script>
+
+    <script src="<?php echo asset_url('js/components/asscrollable.js'); ?>"></script>
+    
+    <script src="<?php echo asset_url('js/jquery.dataTables.js'); ?>"></script>
+    <script src="<?php echo asset_url('js/dataTables.responsive.js'); ?>"></script>
+
+
 
 </body>
 

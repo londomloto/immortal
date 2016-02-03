@@ -1,0 +1,8 @@
+1. Folder crud-datatables dicopy ke folder modules
+2. replace file main.php pada folder layouts atau tambahkan pada site menu :
+<li class="site-menu-item">
+<a class="animsition-link" href="<?php echo site_url('crud-product'); ?>" data-push="1">
+<i class="site-menu-icon wb-menu" aria-hidden="true"></i>
+<span class="site-menu-title">CRUD Products</span>
+</a>
+</li>
