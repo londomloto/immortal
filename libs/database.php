@@ -43,6 +43,7 @@ function db_query($sql, $bind = array()) {
 
 	$query = false;
 	$stmt  = mysqli_stmt_init($db);
+	$sql   = trim($sql);
 
 	if (mysqli_stmt_prepare($stmt, $sql)) {
 
