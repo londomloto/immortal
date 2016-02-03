@@ -44,6 +44,21 @@ function load_config() {
 	}
 }
 
+function &modules() {
+	static $modules = array();
+	return $modules;
+}
+
+function add_module($name, $config = false) {
+	$modules =& modules();
+	$modules[$name] = $config;
+}
+
+function get_module($name) {
+	$modules =& modules();
+	return isset($modules[$name]) ? $modules[$name] : false;
+}
+
 function load_libraries() {
 	$autoload = get_config('autoload');
 	$dbload   = get_config('database')->load;

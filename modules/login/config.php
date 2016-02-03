@@ -1,5 +1,6 @@
 <?php
 
 return array(
-	'layout' => 'login'
+	'layout'   => 'login',
+	'validate' => false
 );

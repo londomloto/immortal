@@ -79,3 +79,27 @@ function redirect($url) {
 	header('Location: '.$url);
 	exit();
 }
+
+function breadcrumb() {
+	$segments = uri_segments();
+	$default  = get_config('default');
+	$current  = array_pop($segments);
+	
+	$html = '';
+	$uris = array();
+
+	if (count($segments) == 0 && $current != $default) {
+		$html .= sprintf('<li><a href="%s" data-push="1">%s</a></li>', site_url($default), $default);
+	}
+
+	foreach($segments as $seg) {
+		$uris[] = $seg;
+		$html .= sprintf('<li><a href="%s" data-push="1">%s</a></li>', site_url(implode('/', $uris)), $seg);
+	}
+
+	if ( ! empty($current)) {
+		$html .= sprintf('<li class="active">%s</li>', $current);
+	}
+	
+	return '<ol class="breadcrumb" style="padding: 8px 0; margin-bottom: 0;">'.$html.'</ol><hr style="margin: 5px 0;">';
+}

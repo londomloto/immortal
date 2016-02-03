@@ -1,52 +1,11 @@
-<div class="row">
-	<div class="col-sm-3">
-		<div class="panel panel-default">
-			<div class="list-group list-group-dividered list-group-full">
-				<?php $tables = db_list_tables(); ?>
-				<?php foreach($tables as $tab): ?>
-				<a class="list-group-item" data-push="1" href="<?php echo site_url("table/$tab"); ?>">
-					Table <strong>`<?php echo $tab; ?>`</strong>
-				</a>
-				<?php endforeach; ?>
-			</div>	
-		</div>
-		
-	</div>
-	<div class="col-sm-9">
-		<div class="panel">
+<?php echo breadcrumb(); ?>
 
-			<?php
-			$table = uri_segment(1);
-			
-			$cols  = array();
-			$rows  = array();
-
-			if ( ! empty($table)) {
-				$cols = db_field_data($table);
-				$rows = db_fetch_all("SELECT * FROM $table");
-			}
-			?>
-			<table class="table">
-				<thead>
-					<tr>
-						<?php foreach($cols as $col): ?>
-						<th><?php echo $col['name']; ?></th>
-						<?php endforeach; ?>
-					</tr>
-				</thead>
-				<tbody>
-					<?php foreach($rows as $row): ?>
-					<tr>
-						<?php foreach($cols as $col): ?>
-						<td><?php echo $row[$col['name']]; ?></td>
-						<?php endforeach; ?>
-					</tr>
-					<?php endforeach; ?>
-				</tbody>
-			</table>
-
-		</div>
-		
-	</div>
-</div>
-
+<h2>Scaffolding</h2>
+<p>
+Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+</p>

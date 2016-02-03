@@ -40,28 +40,45 @@ function start() {
 		$module = get_config('default');
 	}
 
-	set_var('module', $module);
-
 	$layout = 'main.php';
 
 	if ( $module != '') {
 		
-		$module = BASEPATH.'modules/'.$module.'/';
+		$modpath = BASEPATH.'modules/'.$module.'/';
 		
-		if (is_dir($module)) {
+		if (is_dir($modpath)) {
 
-			if (file_exists($module.'config.php')) {
+			$modcfg = new stdClass();
+			$modcfg->path = $modpath;
+
+			$validate = false;
+			$redirect = 'login';
+
+			if (file_exists($modpath.'config.php')) {
 				
-				$modcfg = include($module.'config.php');
+				$modcfg = json_decode(json_encode(include($modpath.'config.php')));
+				$modcfg->path = $modpath;
 
-				if (isset($modcfg['layout'])) {
-					$layout = $modcfg['layout'].'.php';
+				if (isset($modcfg->layout)) {
+					$layout = $modcfg->layout.'.php';
 				}
 
-				if (isset($modcfg['script'])) {
-					add_script($modcfg['script']);
+				if (isset($modcfg->validate)) {
+					$validate = $modcfg->validate;
 				}
-				
+
+				if (isset($modcfg->redirect)) {
+					$redirect = $modcfg->redirect;
+				}
+
+			}
+
+			add_module($module, $modcfg);
+
+			if ($validate) {
+				if ( ! has_session($validate)) {
+					redirect($redirect);
+				}
 			}
 
 			$page = array_shift($segments);
@@ -69,18 +86,18 @@ function start() {
 			// crawl extra path
 			while(count($segments) > 0) {
 				$path = implode('/', $segments);
-				if (file_exists($module.$path.'.php')) {
+				if (file_exists($modpath.$path.'.php')) {
 					$page = $path;
 					break;
 				}
-				$curr = array_pop($segments);
+				array_pop($segments);
 			}
 
-			if (empty($page) || ! file_exists($module.$page.'.php')) {
-				$page = get_var('module');
+			if (empty($page) || ! file_exists($modpath.$page.'.php')) {
+				$page = $module;
 			}
 
-			$page = $module.$page.'.php';
+			$page = $modpath.$page.'.php';
 
 			if (file_exists($page)) {
 				ob_start();

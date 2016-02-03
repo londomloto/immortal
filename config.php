@@ -2,18 +2,24 @@
 
 return array(
 	
-	'name'    => 'App',
-
-	'version' => '1.0.0',
-
-	'title'   => 'pushstate.com',
-
-	'index'   => '',
-
-	'default' => 'login',
+	'name' => 'App',
 	
-	'suffix'  => '.xyz',
-
+	'version' => '1.0.0',
+	
+	'title' => 'immortal',
+	
+	'author' => 'supernova',
+	
+	'description' => 'simple php application',
+	
+	'keywords' => array('simple', 'php', 'application', 'procedural'),
+	
+	'index' => '',
+	
+	'default' => 'home',
+	
+	'suffix' => '.xyz',
+	
 	'autoload' => array(
 		'database',
 		'session'

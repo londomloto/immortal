@@ -1,7 +1,7 @@
 <?php
 
 return array(
-	'title'    => 'Home',
+	'title' => 'CRUD Product',
 	'validate' => 'user',
 	'redirect' => 'login'
 );

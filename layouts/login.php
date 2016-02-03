@@ -10,8 +10,8 @@ if (has_session('user')) {
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
-    <meta name="description" content="bootstrap admin template">
-    <meta name="author" content="">
+    <meta name="description" content="<?php echo get_config('description'); ?>">
+    <meta name="author" content="<?php echo get_config('author'); ?>">
 
     <title>Login | Immortal</title>
 
@@ -42,8 +42,6 @@ if (has_session('user')) {
         }
 
     </script>
-
-
 
 </head>
 

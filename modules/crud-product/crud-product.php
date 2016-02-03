@@ -28,7 +28,12 @@ $(document).ready(function() {
 } );
 </script>
 
-<h2>PRODUCT</h2><hr>
+<?php echo breadcrumb(); ?>
+
+<h2>PRODUCT</h2>
+
+
+<hr>
 <button onClick="showModProduct()" class="btn btn-block btn-success">Tambah</button>
 <table id="crudProduct" class="display" width="100%">
     <thead>
