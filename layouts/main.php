@@ -39,10 +39,6 @@
             return '<?php echo site_url("'+uri+'"); ?>';
         }
         
-        function currentUrl() {
-            return '<?php echo current_url(); ?>';
-        }
-
     </script>
 
 </head>

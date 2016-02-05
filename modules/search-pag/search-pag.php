@@ -1,6 +1,6 @@
 <?php
     $detail = has_session('pelanggan') ? '<a href="javascript:;">Detail</a>' : '';
-    
+
     $page  = (int) get_param('page', 1);    // default page: 1
     $limit = 4;                             // sql query limit
     $start = $page * $limit - $limit;       // sql query offset
@@ -37,7 +37,7 @@
         <div class="row">    
             <div class="col-md-3">
                 <div class="list-group">
-                    <form class="form-horizontal" data-push="1">
+                    <form action="<?php echo current_url(); ?>" class="form-horizontal" data-push="1">
                         <div class="form-group"> 
                             <div class="col-sm-12">
                                 <label class="control-label">Kategori</label>

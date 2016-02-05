@@ -82,12 +82,17 @@ $(document).ready(function(){
 	$('body').on('submit', 'form[data-push]', function(e){
 		
 		var method = $(this).attr('method') || 'get',
-			action = $(this).attr('action') || currentUrl(),
+			action = $(this).attr('action'),
 			upload = $(this).find('input[type=file]').length;
 
 		if ( ! upload) {
 
 			e.preventDefault();
+
+			if ( ! action) {
+				alert('Form action undefined!');
+				return;
+			}
 
 			var url = action,
 				data = $(this).serialize();
