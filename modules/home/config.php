@@ -2,6 +2,5 @@
 
 return array(
 	'title'    => 'Home',
-	'validate' => 'user',
-	'redirect' => 'login'
+	'validate' => false
 );

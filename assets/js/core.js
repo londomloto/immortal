@@ -502,15 +502,11 @@
                 $(this).removeClass('hover');
             }).on('deactive.site.menu', '.site-menu-item.active', function(e) {
                 var $item = $(this);
-
                 $item.removeClass('active');
-
                 e.stopPropagation();
             }).on('active.site.menu', '.site-menu-item', function(e) {
                 var $item = $(this);
-
                 $item.addClass('active');
-
                 e.stopPropagation();
             }).on('open.site.menu', '.site-menu-item', function(e) {
                 var $item = $(this);
@@ -530,7 +526,23 @@
                 self.collapse($item, function() {
                     $item.removeClass('open');
                 });
+                e.stopPropagation();
+            }).on('click.site.menu', '.site-menu-item', function(e) {
+                if ($(this).is('.has-sub')) {
+                    e.preventDefault();
+                    if ($(this).is('.open')) {
+                        $(this).trigger('close.site.menu');
+                    } else {
+                        $(this).trigger('open.site.menu');
+                    }
+                } else {
+                    
+                    if ( ! $(this).is('.active')) {
+                        $(this).siblings('.active').trigger('deactive.site.menu');
+                        $(this).trigger('active.site.menu');
+                    }
 
+                }
                 e.stopPropagation();
             });
         },

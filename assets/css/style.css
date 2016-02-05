@@ -1555,9 +1555,9 @@ screen and (min-width: 1200px) and (min-width: 768px) {
 }
 .after-run .site-menubar-unfold .site-menu-item {
     line-height: 36px;
-    -webkit-transition: -webkit-transform .1s, all .25s;
+    /*-webkit-transition: -webkit-transform .1s, all .25s;
     -o-transition: -o-transform .1s, all .25s;
-    transition: transform .1s, all .25s;
+    transition: transform .1s, all .25s;*/
 }
 .after-run .site-menubar-unfold .site-menu-item.open > a .site-menu-arrow {
     -webkit-transform: rotate(90deg);

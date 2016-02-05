@@ -22,7 +22,8 @@ return array(
 	
 	'autoload' => array(
 		'database',
-		'session'
+		'session',
+		'pagination'
 	),
 
 	'database'=> array(

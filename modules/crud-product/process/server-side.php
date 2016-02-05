@@ -92,7 +92,7 @@
 		for ( $i=0 ; $i<$iColumnCount ; $i++ ) {
 			$row[] = $aRow[ $aColumns[$i] ];
 		}
-		$row = array( $btn, $aRow['id'], $aRow['name'], $aRow['slug'], $aRow['category'] );
+		$row = array( $btn, $aRow['name'], $aRow['slug'], $aRow['category'] );
 		$output['aaData'][] = $row;
 	}
 	

@@ -33,10 +33,10 @@
 		
 		$user = db_fetch_one('SELECT * FROM users WHERE email = ?', array($post['email']));
 
-		if ($user && password_verify($post['password'], $user['passwd'])) {
+		if ($user && md5($post['password']) == $user['passwd']) {
 			$result['success'] = true;
 			$result['message'] = '';
-
+			
 			unset($user['passwd']);
 
 			set_session('user', $user);

@@ -44,21 +44,6 @@ function load_config() {
 	}
 }
 
-function &modules() {
-	static $modules = array();
-	return $modules;
-}
-
-function add_module($name, $config = false) {
-	$modules =& modules();
-	$modules[$name] = $config;
-}
-
-function get_module($name) {
-	$modules =& modules();
-	return isset($modules[$name]) ? $modules[$name] : false;
-}
-
 function load_libraries() {
 	$autoload = get_config('autoload');
 	$dbload   = get_config('database')->load;
@@ -72,6 +57,21 @@ function load_libraries() {
 			}
 		}
 	}
+}
+
+function &content() {
+	static $content = '';
+	return $content;
+}
+
+function set_content($page) {
+	$content =& content();
+	$content = $page;
+}
+
+function get_content() {
+	$content =& content();
+	return $content;
 }
 
 function is_ajax() {
@@ -97,4 +97,31 @@ function get_post($field = null, $default = '') {
 	}
 
 	return $_POST;	
+}
+
+function get_param($field = null, $default = '') {
+
+	$query  = get_var('qry');
+	$magic  = get_magic_quotes_gpc();
+	$params = array();
+
+	if ( ! empty($query)) {
+		
+		parse_str($query, $params);
+
+		foreach($params as $key => $val) {
+			if ( ! $magic) {
+				$val = addslashes($val);
+			}
+			$val = strip_tags($val);
+			$params[$key] = $val;
+		}
+
+	}
+
+	if ( ! empty($field)) {
+		return isset($params[$field]) ? $params[$field] : $default;	
+	}
+	
+	return $params;
 }

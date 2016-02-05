@@ -16,11 +16,10 @@ $(document).ready(function() {
 		"sServerMethod": "POST",
 
 		"columnDefs": [
-			{ "orderable": true, "targets": 0, "searchable": true },
+			{ "orderable": false, "targets": 0, "searchable": false },
 			{ "orderable": true, "targets": 1, "searchable": true },
 			{ "orderable": true, "targets": 2, "searchable": true },
-			{ "orderable": true, "targets": 3, "searchable": true },
-			{ "orderable": false, "targets": 4, "searchable": true }
+			{ "orderable": true, "targets": 3, "searchable": true }
 		]
 	});
 	
@@ -28,18 +27,12 @@ $(document).ready(function() {
 } );
 </script>
 
-<?php echo breadcrumb(); ?>
-
-<h2>PRODUCT</h2>
-
-
-<hr>
-<button onClick="showModProduct()" class="btn btn-block btn-success">Tambah</button>
+<h2>PRODUCT</h2><hr>
+<button onClick="showModProduct()" class="btn btn-default btn-info">Tambah</button><br />
 <table id="crudProduct" class="display" width="100%">
     <thead>
         <tr>
             <th>AKSI</th> 
-            <th>ID</th>
             <th>NAME</th>
             <th>SLUG</th> 
             <th>CATEGORY</th>                       
@@ -50,7 +43,7 @@ $(document).ready(function() {
 </table>
 		
 <!-- Modal Popup -->
-<div class="modal fade" id="ModProduct" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal modal-info fade" id="ModProduct" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -64,8 +57,6 @@ $(document).ready(function() {
                     <span class="sr-only">Error:</span>
                     Anda yakin ingin menghapus data ini ?						
                 </div>
-                <div id="hasil"></div>	
-                <br>
                 <form class="form-horizontal" id="formProduct">
                     
                     <input type="hidden" class="form-control" id="id" name="id"/>
@@ -91,20 +82,38 @@ $(document).ready(function() {
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" onClick="submitAddProduct()" class="btn btn-success" data-dismiss="modal" id="simpan">Simpan</button>
-                <button type="button" onClick="submiteditProduct()" class="btn btn-success" data-dismiss="modal" id="ubah">Ubah</button> 
-                <button type="button" onClick="submitdelProduct()" class="btn btn-success" data-dismiss="modal" id="hapus">Hapus</button>
-                <button type="button" class="btn btn-success" data-dismiss="modal">Batal</button>
+                <button type="button" onClick="submitAddProduct()" class="btn btn-info" data-dismiss="modal" id="simpan">Simpan</button>
+                <button type="button" onClick="submiteditProduct()" class="btn btn-info" data-dismiss="modal" id="ubah">Ubah</button> 
+                <button type="button" onClick="submitdelProduct()" class="btn btn-info" data-dismiss="modal" id="hapus">Hapus</button>
+                <button type="button" class="btn btn-info" data-dismiss="modal">Batal</button>
             </div>
         </div>
     </div>
 </div>
-		
+	
+<!-- Modal Popup -->
+<div class="modal modal-info fade" id="ModInfo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalInfo">Info</h4>
+            </div>
+            <div class="modal-body">
+                <div id="hasil"></div>	
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info" data-dismiss="modal">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+	
 <script>
 	//Tampilkan Modal 
 	function showModProduct( id )
 	{
-		//waitingDialog.show();
+		$('.page').mask();
 		clearModals();
 		
 		// Proses menyiapkan modal Untuk di Edit atau Di Hapus 
@@ -118,18 +127,18 @@ $(document).ready(function() {
 				dataType: 'json',
 				data: {id:id},
 				success: function(res) {
-					//waitingDialog.hide();
+					$('.page').unmask();
 					setModalData( res );
 				}
 			});
 		}
 		// Memanggil modal Untuk Tambahkan Data
 		else
-		{
+		{			
 			$("#ModProduct").modal("show");
 			$("#myModalLabel").html("Tambah Data Product");
+			$('.page').unmask();
 			$("#simpan").show(); 
-			//waitingDialog.hide();
 		}
 	}
 	
@@ -148,12 +157,13 @@ $(document).ready(function() {
 	//Data Yang Di Tampilkan Pada Modal Ketika ingin Hapus Data
 	function deleteProduct( id )
 	{
+		$('.page').mask();
 		clearModals();
 
 		$.ajax({
 			type: "POST",
 
-			url: siteUrl('crud-product/process/process-crud-product/delete'),
+			url: siteUrl('crud-product/process/process-crud-product/tampil'),
 
 			dataType: 'json',
 			data: {id:id},
@@ -165,10 +175,9 @@ $(document).ready(function() {
 				$("#name").val(data.name).attr("disabled","true");
 				$("#slug").val(data.slug).attr("disabled","true");
 				$("#category").val(data.category).attr("disabled","true");
-				$("#hapus").show();
-				$("#ModProduct").modal("show");
-				
-				//waitingDialog.hide();			
+				$("#hapus").show();			
+				$('.page').unmask();		
+				$("#ModProduct").modal("show");	
 			}
 		});
 	}
@@ -176,7 +185,7 @@ $(document).ready(function() {
 	function submitAddProduct()
 	{
 		var formData = $("#formProduct").serialize();
-		//waitingDialog.show();
+		$('.page').mask();
 		$.ajax({
 			type:"POST",
 
@@ -184,9 +193,10 @@ $(document).ready(function() {
 
 			data:formData,
 			success:function(data){
-				//waitingDialog.hide();			
+				$('.page').unmask();		
 				dTable.ajax.reload(); 
 				$("#hasil").html(data);	
+				$("#ModInfo").modal("show");
 			}
 		});
 	}	
@@ -194,7 +204,7 @@ $(document).ready(function() {
 	function submiteditProduct()
 	{
 		var formData = $("#formProduct").serialize();
-		//waitingDialog.show();
+		$('.page').mask();
 		$.ajax({
 			type:"POST",
 
@@ -202,9 +212,10 @@ $(document).ready(function() {
 
 			data:formData,
 			success:function(data){
-				//waitingDialog.hide();			
-				dTable.ajax.reload(); 
+				$('.page').unmask();		
+				dTable.ajax.reload(); 	
 				$("#hasil").html(data);	
+				$("#ModInfo").modal("show");
 			}
 		});
 	}
@@ -212,18 +223,19 @@ $(document).ready(function() {
 	function submitdelProduct()
 	{
 		var formData = $("#formProduct").serialize();
-		//waitingDialog.show();
+		$('.page').mask();
 		$.ajax({
 			type:"POST",
 			url: siteUrl('crud-product/process/process-crud-product/delete'),
 			data: formData,
 			success:function(data){
-				//waitingDialog.hide();			
+				$('.page').unmask();		
 				dTable.ajax.reload(); 
 				$("#hasil").html(data);	
+				$("#ModInfo").modal("show");
 			}
 		});
-	}
+	}	
 		
 	//Clear Modal atau menutup modal supaya tidak terjadi duplikat modal
 	function clearModals()
@@ -235,7 +247,7 @@ $(document).ready(function() {
 		$("#category").val("").removeAttr( "disabled" );
 		$("#simpan").hide();
 		$("#ubah").hide();
-		$("#hapus").hide();
+		$("#hapus").hide();	
 	}
 	
 </script>

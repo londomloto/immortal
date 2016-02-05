@@ -52,6 +52,63 @@ function site_url($uri) {
 	return $site;
 }
 
+function current_url($query = '') {
+	$url  = preg_replace('/\/$/', '', base_url()).get_var('uri');
+	$qry  = get_var('qry');
+	
+	if ( ! empty($qry)) {
+		$url = append_url($url, $qry);
+	}
+
+	if ( ! empty($query)) {
+		$url = append_url($url, $query);
+	}
+	return $url;
+}
+
+function xss_clean_query($query) {
+	if ( ! empty($query)) {
+		
+		parse_str($query, $array);
+		
+		$magic = get_magic_quotes_gpc();
+
+		foreach($array as $key => $val) {
+			if ( ! $magic) {
+				$val = addslashes($val);
+			}
+			$val = strip_tags($val);
+			$array[$key] = $val;
+		}
+
+		$query = http_build_query($array);
+	}
+
+	return $query;
+}
+
+function append_url($url, $query) {
+
+	$parsed = parse_url($url);
+	$param1 = array();
+	$param2 = array();
+
+	if (isset($parsed['query'])) {
+		$parsed['query'] = xss_clean_query($parsed['query']);
+		parse_str($parsed['query'], $param1);
+	}
+
+	$query = xss_clean_query($query);
+	parse_str($query, $param2);
+
+	$params = array_merge($param1, $param2);
+	$query  = http_build_query($params);
+
+	$url = $parsed['scheme'].'://'.$parsed['host'].$parsed['path'];
+
+	return $url.'?'.$query;
+}
+
 function uri_segments() {
 	$suf = get_config('suffix');
 
@@ -62,9 +119,9 @@ function uri_segments() {
 	return $seg;
 }
 
-function uri_segment($index = 0) {
+function uri_segment($index = 0, $default = '') {
 	$seg = uri_segments();
-	return isset($seg[$index]) ? $seg[$index] : '';
+	return isset($seg[$index]) ? $seg[$index] : $default;
 }
 
 /** common url helper */

@@ -21,6 +21,7 @@
     
     <link rel="stylesheet" type="text/css" href="<?php echo asset_url('fonts/roboto/roboto.css'); ?>">
     <link rel="stylesheet" type="text/css" href="<?php echo asset_url('fonts/web-icons/web-icons.css'); ?>">
+    <link rel="stylesheet" type="text/css" href="<?php echo asset_url('fonts/font-awesome/font-awesome.css'); ?>">
     <link rel="stylesheet" type="text/css" href="<?php echo asset_url('css/style.css'); ?>">
 
     <script src="<?php echo asset_url('vendor/modernizr/modernizr.js'); ?>"></script>
@@ -36,6 +37,10 @@
 
         function siteUrl(uri) {
             return '<?php echo site_url("'+uri+'"); ?>';
+        }
+        
+        function currentUrl() {
+            return '<?php echo current_url(); ?>';
         }
 
     </script>
@@ -114,26 +119,97 @@
             <div>
                 <div>
                     <ul class="site-menu">
+
+                        <?php if ( ! has_session('pelanggan')): ?>
+                        
+                        <li class="site-menu-category">Pelanggan</li>
+
+                        <li class="site-menu-item">
+                            <a href="<?php echo site_url('logpel'); ?>" data-push="1">
+                                <i class="site-menu-icon wb-menu" aria-hidden="true"></i>
+                                <span class="site-menu-title">Login</span>
+                            </a>
+                        </li>
+
+                        <?php else: ?>
+
+                        <?php $pelanggan = get_session('pelanggan'); ?>
+
+                        <li class="site-menu-category"><?php echo $pelanggan['nama']; ?></li>
+
+                        <li class="site-menu-item">
+                            <a href="<?php echo site_url('pelanggan/profile'); ?>" data-push="1">
+                                <i class="site-menu-icon wb-menu" aria-hidden="true"></i>
+                                <span class="site-menu-title">Profile</span>
+                            </a>
+                        </li>
+
+                        <li class="site-menu-item">
+                            <a href="<?php echo site_url('pelanggan/logout'); ?>">
+                                <i class="site-menu-icon wb-menu" aria-hidden="true"></i>
+                                <span class="site-menu-title">Logout</span>
+                            </a>
+                        </li>
+
+                        <?php endif; ?>
+
                         <li class="site-menu-category">General</li>
                         
-                        <li class="site-menu-item">
-                            <a class="animsition-link" href="<?php echo site_url('home'); ?>" data-push="1">
+                        <li class="site-menu-item has-sub">
+                            <a href="javascript:;">
                                 <i class="site-menu-icon wb-menu" aria-hidden="true"></i>
                                 <span class="site-menu-title">Home</span>
+                                <span class="site-menu-arrow"></span>
                             </a>
+                            <ul class="site-menu-sub">
+                                <li class="site-menu-item">
+                                    <a href="<?php echo site_url('home/company'); ?>" data-push="1">
+                                        <i class="site-menu-icon " aria-hidden="true"></i>
+                                        <span class="site-menu-title">Company</span>
+                                    </a>
+                                </li>
+                                <li class="site-menu-item">
+                                    <a href="<?php echo site_url('home/developer'); ?>" data-push="1">
+                                        <i class="site-menu-icon " aria-hidden="true"></i>
+                                        <span class="site-menu-title">Developer</span>
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
 
-                        <li class="site-menu-item">
-                            <a class="animsition-link" href="<?php echo site_url('table'); ?>" data-push="1">
+                        <li class="site-menu-item has-sub">
+                            <a href="javascript:;">
                                 <i class="site-menu-icon wb-menu" aria-hidden="true"></i>
-                                <span class="site-menu-title">Table</span>
+                                <span class="site-menu-title">Libraries</span>
+                                <span class="site-menu-arrow"></span>
                             </a>
+                            <ul class="site-menu-sub">
+                                <li class="site-menu-item">
+                                    <a href="<?php echo site_url('library/upload'); ?>" data-push="1">
+                                        <i class="site-menu-icon " aria-hidden="true"></i>
+                                        <span class="site-menu-title">Upload</span>
+                                    </a>
+                                </li>
+                                <li class="site-menu-item">
+                                    <a href="<?php echo site_url('library/thumbnail'); ?>" data-push="1">
+                                        <i class="site-menu-icon " aria-hidden="true"></i>
+                                        <span class="site-menu-title">Thumbnail</span>
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
 
                         <li class="site-menu-item">
-                            <a class="animsition-link" href="<?php echo site_url('crud-product'); ?>" data-push="1">
+                            <a href="<?php echo site_url('crud-product'); ?>" data-push="1">
                                 <i class="site-menu-icon wb-menu" aria-hidden="true"></i>
                                 <span class="site-menu-title">CRUD Products</span>
+                            </a>
+                        </li>
+
+                        <li class="site-menu-item">
+                            <a class="animsition-link" href="<?php echo site_url('search-pag'); ?>" data-push="1">
+                                <i class="site-menu-icon wb-menu" aria-hidden="true"></i>
+                                <span class="site-menu-title">Search & Pagination</span>
                             </a>
                         </li>
 
@@ -155,8 +231,9 @@
             </a>
         </div>
     </div>
+
     <div class="site-gridmenu">
-        <ul>
+        <!-- <ul>
             <li>
                 <a href="#">
                     <i class="icon wb-envelope"></i>
@@ -205,7 +282,7 @@
                     <span>Dashboard</span>
                 </a>
             </li>
-        </ul>
+        </ul> -->
     </div>
 
     <script src="<?php echo asset_url('vendor/jquery/jquery.js'); ?>"></script>
@@ -225,7 +302,7 @@
     <script src="<?php echo asset_url('js/components/asscrollable.js'); ?>"></script>
 
     <div class="page">
-        <div class="page-content">
+        <div class="page-content container-fluid">
             <?php echo get_content(); ?>
         </div>
     </div>

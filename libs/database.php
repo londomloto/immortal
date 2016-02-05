@@ -118,6 +118,11 @@ function db_fetch_one($sql, $bind = array()) {
 	return $data;	
 }
 
+function db_total_rows() {
+	$row = db_fetch_one("SELECT FOUND_ROWS() AS total");
+	return (int) $row['total'];
+}
+
 function db_list_tables() {
 	$tables = db_fetch_all('SHOW TABLES');
 	$dbname = get_config('database')->name;

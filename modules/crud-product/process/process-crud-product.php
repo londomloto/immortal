@@ -1,4 +1,4 @@
-<?php
+ <?php
 	$action = uri_segment(3); 
 	$post   = get_post(); // auto sanitize
 
@@ -20,13 +20,9 @@
 			$cek = db_fetch_one("SELECT * FROM products WHERE slug = ?", array($slug));
 
 			if ( ! $name || ! $slug || ! $category) {
-				echo "<script language=\"Javascript\">\n";
-				echo "window.alert('Data tidak lengkap !');";
-				echo "</script>";
+				echo "Data tidak lengkap !";
 			} else if ( ! empty($cek)){
-				echo "<script language=\"Javascript\">\n";
-				echo "window.alert('Sudah ada data slug yang sama !');";
-				echo "</script>";
+				echo "Sudah ada data slug yang sama !";
 			} else {																				
 				
 				$simpan = db_query(
@@ -35,13 +31,9 @@
 				);
 
 				if ($simpan) {
-					echo "<script language=\"Javascript\">\n";
-					echo "window.alert('Data berhasil disimpan');";
-					echo "</script>";
+					echo "Data berhasil disimpan";
 				} else {
-					echo "<script language=\"Javascript\">\n";
-					echo "window.alert('Data gagal disimpan');";
-					echo "</script>";
+					echo "Data gagal disimpan";
 				}
 
 			}
@@ -57,29 +49,21 @@
 
 			$cek = db_fetch_one("SELECT * FROM products WHERE slug = ? AND id <> ?", array($slug, $id));
 
-			if ( ! $name || ! $slug) {
-				echo "<script language=\"Javascript\">\n";
-				echo "window.alert('Data tidak lengkap !');";
-				echo "</script>";
+			if ( ! $name || ! $slug || ! $category) {
+				echo "Data tidak lengkap !";
 			} else if ( ! empty($cek)){
-				echo "<script language=\"Javascript\">\n";
-				echo "window.alert('Sudah ada data slug yang sama !');";
-				echo "</script>";
+				echo "Sudah ada data slug yang sama !";
 			} else {																			
 
 				$ubah = db_query(
-					"UPDATE products SET name = ?, slug = ? WHERE id = ?",
-					array($name, $slug, $id)
+					"UPDATE products SET name = ?, slug = ?, category = ? WHERE id = ?",
+					array($name, $slug, $category, $id)
 				);
 			
 				if ($ubah) {
-					echo "<script language=\"Javascript\">\n";
-					echo "window.alert('Data berhasil diubah');";
-					echo "</script>";
+					echo "Data berhasil diubah";
 				} else {
-					echo "<script language=\"Javascript\">\n";
-					echo "window.alert('Data gagal diubah');";
-					echo "</script>";
+					echo "Data gagal diubah";
 				}
 			}
 		break;
@@ -91,13 +75,9 @@
 			$delete = db_query("DELETE FROM products WHERE id = ?", array($id));
 			
 			if ($delete) {
-				echo "<script>\n";
-				echo "alert('Data berhasil dihapus');";
-				echo "</script>";
+				echo "Data berhasil dihapus";
 			} else {
-				echo "<script>\n";
-				echo "alert('Data gagal dihapus');";
-				echo "</script>";
+				echo "Data gagal dihapus";
 			}
 
 		break;

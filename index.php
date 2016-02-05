@@ -10,7 +10,7 @@ define('BASEPATH', __DIR__.DS);
 
 // cores libraries...
 include('libs/common.php');
-include('libs/output.php');
+include('libs/module.php');
 include('libs/url.php');
 include('libs/asset.php');
 
@@ -48,61 +48,27 @@ function start() {
 	$layout = 'main.php';
 
 	if ( $module != '') {
-		
-		$modpath = BASEPATH.'modules/'.$module.'/';
-		
-		if (is_dir($modpath)) {
 
-			$modcfg = new stdClass();
-			$modcfg->path = $modpath;
+		$module = init_module($module);
 
-			$validate = false;
-			$redirect = 'login';
+		if ($module) {
+			$layout = $module->layout.'.php';
+			$page   = array_shift($segments);
 
-			if (file_exists($modpath.'config.php')) {
-				
-				$modcfg = json_decode(json_encode(include($modpath.'config.php')));
-				$modcfg->path = $modpath;
-
-				if (isset($modcfg->layout)) {
-					$layout = $modcfg->layout.'.php';
-				}
-
-				if (isset($modcfg->validate)) {
-					$validate = $modcfg->validate;
-				}
-
-				if (isset($modcfg->redirect)) {
-					$redirect = $modcfg->redirect;
-				}
-
-			}
-
-			add_module($module, $modcfg);
-
-			if ($validate) {
-				if ( ! has_session($validate)) {
-					redirect($redirect);
-				}
-			}
-
-			$page = array_shift($segments);
-
-			// crawl extra path
 			while(count($segments) > 0) {
 				$path = implode('/', $segments);
-				if (file_exists($modpath.$path.'.php')) {
+				if (file_exists($module->path.$path.'.php')) {
 					$page = $path;
 					break;
 				}
 				array_pop($segments);
 			}
 
-			if (empty($page) || ! file_exists($modpath.$page.'.php')) {
-				$page = $module;
+			if (empty($page) || ! file_exists($module->path.$page.'.php')) {
+				$page = $module->name;
 			}
-
-			$page = $modpath.$page.'.php';
+			
+			$page = $module->path.$page.'.php';
 
 			if (file_exists($page)) {
 				ob_start();
