@@ -7,6 +7,43 @@ function setLastUrl(url) {
 	localStorage.setItem('lasturl', url);
 }
 
+function getQuery(url) {
+	var has = url.indexOf('?');
+	return has ? url.slice(has + 1) : '';
+}
+
+function parseQuery(query) {
+	var params = [],
+		plusRe = /\+/g,
+		findRe = /([^&=]+)=?([^&]*)/g,
+		decode = function(str) { return decodeURIComponent(str.replace(plusRe, ' ')); },
+		match;
+
+	while(match = findRe.exec(query)) {
+		params.push({
+			name: decode(match[1]),
+			value: decode(match[2])
+		});
+	}
+
+	return params;
+}
+
+function getParam(name) {
+	var url = location.href,
+		params = parseQuery(getQuery(url));
+
+	if (params.length) {
+		var len = params.length, i;
+		for (i = 0; i < len; i++) {
+			if (params[i].name === name) {
+				return params[i].value;
+			}
+		}
+	}
+	return '';
+}
+
 function loadPage(url, push) {
 	
 	var state = {url: url},
@@ -53,23 +90,6 @@ $(document).ready(function(){
 		var url = $(this).attr('href');
 
 		loadPage(url);
-	}
-
-	function parseQuery(query) {
-		var params = [],
-			plusRe = /\+/g,
-			findRe = /([^&=]+)=?([^&]*)/g,
-			decode = function(str) { return decodeURIComponent(str.replace(plusRe, ' ')); },
-			match;
-
-		while(match = findRe.exec(query)) {
-			params.push({
-				name: decode(match[1]),
-				value: decode(match[2])
-			});
-		}
-
-		return params;
 	}
 
 	// handle link

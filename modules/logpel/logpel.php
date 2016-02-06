@@ -91,7 +91,8 @@ $(document).ready(function(){
         hideModal();
 
         var email = $('[name=email]').val(),
-            password = $('[name=password]').val();
+            password = $('[name=password]').val(),
+            redir = getParam('ref') || 'pelanggan/profile';
 
         $('body').mask({transparent: true});
 
@@ -108,7 +109,7 @@ $(document).ready(function(){
             if ( ! res.success) {
                 showAlert(res.message);
             } else {
-                location.href = siteUrl('pelanggan/profile')
+                location.href = siteUrl(redir);
             }
         })
         .always(function(){
