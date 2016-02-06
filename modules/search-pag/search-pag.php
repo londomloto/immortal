@@ -1,6 +1,4 @@
 <?php
-    $detail = has_session('pelanggan') ? '<a href="javascript:;">Detail</a>' : '';
-
     $page  = (int) get_param('page', 1);    // default page: 1
     $limit = 4;                             // sql query limit
     $start = $page * $limit - $limit;       // sql query offset
@@ -97,7 +95,7 @@
                             <img class="img-rounded img-responsive" src="<?php echo asset_url($row['foto']); ?>" id="foto-product">
                             <h6><?php echo $row['category']; ?></h6>
                             <?php echo $row['name']; ?><br />
-                            <?php echo $detail; ?><hr />
+                            <a href="#" data-slug="<?php echo $row['slug']; ?>" class="link-product-detail">Detail</a>
                         </center>
                     </div>
                     <?php endforeach; ?>
@@ -109,3 +107,24 @@
         </div>		
 	</div>
 </div>
+
+<script>
+    $(document).ready(function(){
+
+        var hasSession = '<?php echo has_session("pelanggan"); ?>';
+
+        $('.link-product-detail').on('click', function(e){
+            e.preventDefault();
+
+            var slug = $(this).data('slug');
+
+            if ( ! hasSession) {
+                alert('Untuk melihat detail, Anda harus login dulu');
+                loadPage(siteUrl('logpel') + 'ref=search-pag');
+            } else {
+                loadPage(siteUrl('products/' + slug));
+            }
+
+        });
+    });
+</script>

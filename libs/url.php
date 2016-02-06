@@ -34,7 +34,7 @@ function base_url() {
 	return $base;
 }
 
-function site_url($uri) {
+function site_url($uri, $query = '') {
 	
 	$site   = base_url();
 	$index  = get_config('index');
@@ -49,6 +49,11 @@ function site_url($uri) {
 	}
 
 	$site .= trim($uri, '/');
+
+	if ($query) {
+		$site = append_url($site, $query);
+	}
+
 	return $site;
 }
 
@@ -133,7 +138,15 @@ function redirect($url) {
 	if ( ! preg_match('/^http/', $url)) {
 		$url = site_url($url);
 	}
-	header('Location: '.$url);
+
+	if (is_ajax()) {
+		echo json_encode(array(
+			'success'  => true,
+			'redirect' => $url
+		));
+	} else {
+		header('Location: '.$url);
+	}
 	exit();
 }
 

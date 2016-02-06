@@ -34,8 +34,8 @@
         function baseUrl() {
             return '<?php echo base_url(); ?>';
         }
-
-        function siteUrl(uri) {
+        
+        function siteUrl(uri, qry) {
             return '<?php echo site_url("'+uri+'"); ?>';
         }
         

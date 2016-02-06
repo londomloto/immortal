@@ -22,11 +22,11 @@ function loadPage(url, push) {
 		if (/^[\{\[]"success/.test(response)) {
 			try {
 				var d = JSON.parse(response);
-				if ( ! d.success) {
+				if (d.message) {
 					alert(d.message);
-					if (d.redirect) {
-						location.href = d.redirect;
-					}
+				}
+				if (d.redirect) {
+					location.href = d.redirect;
 				}
 			} catch(e) {}
 		} else {
