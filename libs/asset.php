@@ -30,7 +30,7 @@ function get_script() {
 	return $html;
 }
 
-function image_thumb($file, $width = 184, $height = 240) {
+function thumbify($file, $width = 184, $height = 240) {
 	if (file_exists($file)) {
 
 		// ini_set('memory_limit', '500MB');	

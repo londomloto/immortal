@@ -1,4 +1,8 @@
-
+<?php 
+    if (has_session('pelanggan')) {
+        redirect('pelanggan/profile');
+    }
+?>
 <!-- Modal Login -->
 <div class="modal modal-info fade" id="modal-logpel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog" style="max-width:450px">

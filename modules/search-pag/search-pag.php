@@ -92,7 +92,7 @@
                     <?php foreach($products as $row): ?>
                     <div class="col-md-3">
                         <center> 
-                            <img class="img-rounded img-responsive" src="<?php echo asset_url($row['foto']); ?>" id="foto-product">
+                            <img class="img-rounded img-responsive" src="<?php echo site_url('image/thumb/200x200/'.$row['foto']); ?>" id="foto-product">
                             <h6><?php echo $row['category']; ?></h6>
                             <?php echo $row['name']; ?><br />
                             <a href="#" data-slug="<?php echo $row['slug']; ?>" class="link-product-detail">Detail</a>
