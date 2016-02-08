@@ -3,8 +3,7 @@ $(document).ready(function(){
 
 	$('#form-login').submit(function(e){
 			
-		var email = $('[name=email]').val(),
-			password = $('[name=password]').val();
+		var data = $(this).serialize();
 
 		$('body').mask({transparent: true});
 
@@ -12,10 +11,7 @@ $(document).ready(function(){
 			url: $(this).attr('action'),
 			type: 'post',
 			dataType: 'json',
-			data: {
-				email: email,
-				password: password
-			}
+			data: data
 		})
 		.done(function(res){
 			if ( ! res.success) {
@@ -28,7 +24,6 @@ $(document).ready(function(){
 		.always(function(){
 			$('body').unmask();
 		})
-
 		e.preventDefault();
 	});
 

@@ -11,6 +11,7 @@ define('BASEPATH', __DIR__.DS);
 // cores libraries...
 include('libs/common.php');
 include('libs/module.php');
+include('libs/security.php');
 include('libs/url.php');
 include('libs/asset.php');
 

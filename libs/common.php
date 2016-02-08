@@ -82,46 +82,23 @@ function is_ajax() {
 }
 
 function get_post($field = null, $default = '') {
-	$magic = get_magic_quotes_gpc();
-
-	foreach($_POST as $key => $val) {
-		if ( ! $magic) {
-			 $val = addslashes($val);
-		}
-		$val = strip_tags($val);
-		$_POST[$key] = $val;
-	}	
-
+	csrf_protect();
+	$_POST = xss_protect($_POST);
 	if ( ! empty($field)) {
 		return isset($_POST[$field]) ? $_POST[$field] : $default;
 	}
-
 	return $_POST;	
 }
 
 function get_param($field = null, $default = '') {
-
 	$query  = get_var('qry');
-	$magic  = get_magic_quotes_gpc();
 	$params = array();
-
 	if ( ! empty($query)) {
-		
 		parse_str($query, $params);
-
-		foreach($params as $key => $val) {
-			if ( ! $magic) {
-				$val = addslashes($val);
-			}
-			$val = strip_tags($val);
-			$params[$key] = $val;
-		}
-
+		$params = xss_protect($params);
 	}
-
 	if ( ! empty($field)) {
 		return isset($params[$field]) ? $params[$field] : $default;	
 	}
-	
 	return $params;
 }

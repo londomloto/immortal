@@ -13,6 +13,7 @@
             </div>				
             <div class="modal-body">
                 <form id="form-logpel" method="post" action="<?php echo site_url('logpel/validate'); ?>">
+                    <?php csrf_inject(); ?>
                     <div class="form-group">
                         <label class="sr-only" for="inputEmail">Email</label>
                         <input type="email" class="form-control" id="inputEmail" name="email" required="" placeholder="Email">
@@ -64,7 +65,7 @@
 $(document).ready(function(){
 
     function resetForm() {
-        $('input', $('#modal-logpel')).val('').removeAttr('disabled', false);
+        $('input.form-control', $('#modal-logpel')).val('').removeAttr('disabled', false);
     }
 
     function showModal() {
@@ -94,8 +95,7 @@ $(document).ready(function(){
 
         hideModal();
 
-        var email = $('[name=email]').val(),
-            password = $('[name=password]').val(),
+        var data = $(this).serialize(),
             redir = getParam('ref') || 'pelanggan/profile';
 
         $('body').mask({transparent: true});
@@ -104,10 +104,7 @@ $(document).ready(function(){
             url: $(this).attr('action'),
             type: 'post',
             dataType: 'json',
-            data: {
-                email: email,
-                password: password
-            }
+            data: data
         })
         .done(function(res){
             if ( ! res.success) {

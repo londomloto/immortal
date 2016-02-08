@@ -71,24 +71,12 @@ function current_url($query = '') {
 	return $url;
 }
 
-function xss_clean_query($query) {
+function xss_protect_query($query) {
 	if ( ! empty($query)) {
-		
 		parse_str($query, $array);
-		
-		$magic = get_magic_quotes_gpc();
-
-		foreach($array as $key => $val) {
-			if ( ! $magic) {
-				$val = addslashes($val);
-			}
-			$val = strip_tags($val);
-			$array[$key] = $val;
-		}
-
+		$array = xss_protect($array);
 		$query = http_build_query($array);
 	}
-
 	return $query;
 }
 
@@ -99,11 +87,11 @@ function append_url($url, $query) {
 	$param2 = array();
 
 	if (isset($parsed['query'])) {
-		$parsed['query'] = xss_clean_query($parsed['query']);
+		$parsed['query'] = xss_protect_query($parsed['query']);
 		parse_str($parsed['query'], $param1);
 	}
 
-	$query = xss_clean_query($query);
+	$query = xss_protect_query($query);
 	parse_str($query, $param2);
 
 	$params = array_merge($param1, $param2);
