@@ -29,7 +29,7 @@ return array(
 	'database'=> array(
 		'host' => 'localhost',
 		'user' => 'root',
-		'pass' => 'secret',
+		'pass' => '',
 		'name' => 'immortal',
 		'load' => true
 	)

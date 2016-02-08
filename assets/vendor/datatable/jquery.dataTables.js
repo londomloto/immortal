@@ -10967,7 +10967,7 @@
 				 *      } );
 				 *    } );
 				 */
-				"sFirst": "Awal",
+				"sFirst": "First",
 	
 	
 				/**
@@ -10990,7 +10990,7 @@
 				 *      } );
 				 *    } );
 				 */
-				"sLast": "Akhir",
+				"sLast": "Last",
 	
 	
 				/**
@@ -11013,7 +11013,7 @@
 				 *      } );
 				 *    } );
 				 */
-				"sNext": "Selanjutnya",
+				"sNext": "Next",
 	
 	
 				/**
@@ -11036,7 +11036,7 @@
 				 *      } );
 				 *    } );
 				 */
-				"sPrevious": "Sebelumnya"
+				"sPrevious": "Previous"
 			},
 	
 			/**
@@ -11059,7 +11059,7 @@
 			 *      } );
 			 *    } );
 			 */
-			"sEmptyTable": "Tidak ada data yang tersedia dalam tabel",
+			"sEmptyTable": "No data available in table",
 	
 	
 			/**
@@ -11091,7 +11091,7 @@
 			 *      } );
 			 *    } );
 			 */
-			"sInfo": "Menampilkan _START_ - _END_ dari total _TOTAL_ entri",
+			"sInfo": "Showing _START_ to _END_ of _TOTAL_ entries",
 	
 	
 			/**
@@ -11112,7 +11112,7 @@
 			 *      } );
 			 *    } );
 			 */
-			"sInfoEmpty": "Menampilkan 0 - 0 dari total 0 entri",
+			"sInfoEmpty": "Showing 0 to 0 of 0 entries",
 	
 	
 			/**
@@ -11134,7 +11134,7 @@
 			 *      } );
 			 *    } );
 			 */
-			"sInfoFiltered": "(Filter dari total _MAX_ entri)",
+			"sInfoFiltered": "(filtered from _MAX_ total entries)",
 	
 	
 			/**
@@ -11252,7 +11252,7 @@
 			 *      } );
 			 *    } );
 			 */
-			"sLengthMenu": "Tampilan _MENU_ baris",
+			"sLengthMenu": "Show _MENU_ entries",
 	
 	
 			/**
@@ -11297,7 +11297,7 @@
 			 *      } );
 			 *    } );
 			 */
-			"sProcessing": "Memproses...",
+			"sProcessing": "Processing...",
 	
 	
 			/**
@@ -11332,7 +11332,7 @@
 			 *      } );
 			 *    } );
 			 */
-			"sSearch": "Cari:",
+			"sSearch": "Search:",
 	
 	
 			/**
@@ -11343,7 +11343,7 @@
 			 *  @dtopt Language
 			 *  @name DataTable.defaults.language.searchPlaceholder
 			 */
-			"sSearchPlaceholder": "Masukkan data",
+			"sSearchPlaceholder": "",
 	
 	
 			/**
@@ -11390,7 +11390,7 @@
 			 *      } );
 			 *    } );
 			 */
-			"sZeroRecords": "Tidak ada data"
+			"sZeroRecords": "No matching records found"
 		},
 	
 	
