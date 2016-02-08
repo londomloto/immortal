@@ -1,7 +1,12 @@
 <?php
 
 function xss_protect($data) {
-	$magic = get_magic_quotes_gpc();
+	static $magic = '__UNDEF__';
+	
+	if ($magic == '__UNDEF__') {
+		$magic = get_magic_quotes_gpc();	
+	}
+	
 	if (is_array($data)) {
 		foreach($data as $key => $val) {
 			$data[$key] = xss_protect($val);

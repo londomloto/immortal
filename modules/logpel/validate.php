@@ -9,6 +9,9 @@
 	);
 	
 	if ($pelanggan && md5($post['password']) == $pelanggan['password']) {
+		
+		csrf_protect();
+
 		$result['success'] = true;
 		$result['message'] = '';
 

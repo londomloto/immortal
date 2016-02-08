@@ -82,7 +82,6 @@ function is_ajax() {
 }
 
 function get_post($field = null, $default = '') {
-	csrf_protect();
 	$_POST = xss_protect($_POST);
 	if ( ! empty($field)) {
 		return isset($_POST[$field]) ? $_POST[$field] : $default;
