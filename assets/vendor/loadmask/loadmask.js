@@ -1,4 +1,9 @@
 
+/**
+ * Loading mask
+ *
+ * @author supernova
+ */
 (function($){
 
 	var Loadmask = function(el, options) {

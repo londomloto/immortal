@@ -36,18 +36,19 @@
             <div class="col-md-3">
                 <div class="list-group">
                     <form action="<?php echo current_url(); ?>" class="form-horizontal" data-push="1">
+                        <input type="hidden" name="page" value="1">
                         <div class="form-group"> 
                             <div class="col-sm-12">
                                 <label class="control-label">Kategori</label>
                                 <select name="category" id="category" class="form-control">
-                                <option value="">--Pilih Category--</option> 
-                                <?php 
-                                    $sql = db_fetch_all("SELECT DISTINCT category FROM products");
-                                    foreach($sql as $row):
-                                        $sel = get_param('category') == $row['category'] ? 'selected' : '';
-                                        echo "<option value='".$row['category']."' $sel>".$row['category']."</option>"; 
-                                    endforeach;
-                                ?>
+                                    <option value="">--Pilih Category--</option> 
+                                    <?php 
+                                        $sql = db_fetch_all("SELECT DISTINCT category FROM products");
+                                        foreach($sql as $row):
+                                            $sel = get_param('category') == $row['category'] ? 'selected' : '';
+                                            echo "<option value='".$row['category']."' $sel>".$row['category']."</option>"; 
+                                        endforeach;
+                                    ?>
                                 </select>
                             </div>
                         </div>                
@@ -55,14 +56,14 @@
                             <div class="col-sm-12">
                                 <label class="control-label">Name</label>
                                 <select name="name" id="name" class="form-control"> 
-                                <option value="">--Pilih Name--</option> 
-                                <?php 
-                                    $sql = db_fetch_all("SELECT category, name FROM products");
-                                    foreach($sql as $row):
-                                        $sel = get_param('name') == $row['name'] ? 'selected' : '';
-                                        echo "<option value='".$row['name']."' $sel>".$row['name']."</option>"; 
-                                    endforeach;
-                                ?>
+                                    <option value="">--Pilih Name--</option> 
+                                    <?php 
+                                        $sql = db_fetch_all("SELECT category, name FROM products");
+                                        foreach($sql as $row):
+                                            $sel = get_param('name') == $row['name'] ? 'selected' : '';
+                                            echo "<option value='".$row['name']."' data-category='".$row['category']."' $sel>".$row['name']."</option>"; 
+                                        endforeach;
+                                    ?>
                                 </select>
                             </div>
                         </div> 
@@ -70,20 +71,21 @@
                             <div class="col-sm-12">
                                 <label class="control-label">Slug</label>
                                 <select name="slug" id="slug" class="form-control"> 
-                                <option value="">--Pilih Slug--</option> 
-                                <?php 
-                                    $sql = db_fetch_all("SELECT * FROM products");
-                                    foreach($sql as $row):
-                                        $sel = get_param('slug') == $row['slug'] ? 'selected' : '';
-                                        echo "<option value='".$row['slug']."' $sel>".$row['slug']."</option>"; 
-                                    endforeach;
-                                ?>
+                                    <option value="">--Pilih Slug--</option> 
+                                    <?php 
+                                        $sql = db_fetch_all("SELECT category, slug FROM products");
+                                        foreach($sql as $row):
+                                            $sel = get_param('slug') == $row['slug'] ? 'selected' : '';
+                                            echo "<option value='".$row['slug']."' data-category='".$row['category']."' $sel>".$row['slug']."</option>"; 
+                                        endforeach;
+                                    ?>
                                 </select>	
                             </div>
                         </div>  
-                        <div class="modal-footer">
-                            <button type="submit" name="submit" class="btn btn-info" id="cari">Cari</button>                    
-                        </div>              
+                        <div class="text-right">
+                            <button type="submit" name="submit" class="btn btn-info" id="cari">Cari Data</button>
+                            <a href="<?php echo site_url('search-pag'); ?>" data-push="1" class="btn btn-default">Reset</a>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -110,6 +112,21 @@
 
 <script>
     $(document).ready(function(){
+
+        // combo cascade
+        $('#category').on('change', function(){
+            var category = $(this).val();
+
+            // clear cascaded value
+            $('#name').val('').children().show();
+            $('#slug').val('').children().show();
+
+            if (category) {
+                $('#name > option[data-category!='+category+']').hide();
+                $('#slug > option[data-category!='+category+']').hide();
+            }
+
+        }); 
 
         var hasSession = '<?php echo has_session("pelanggan"); ?>';
 
