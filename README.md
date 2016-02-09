@@ -4,5 +4,5 @@ Procedural php application
 Suitable for learning purposes
 
 Authors:
-- supernova
+- londomloto
 - b.harahap
