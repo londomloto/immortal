@@ -67,6 +67,7 @@ function load_library($name) {
 
 function load_libraries() {
 	$libs = array(
+		'error',
 		'module',
 		'security',
 		'url',
@@ -91,9 +92,22 @@ function &content() {
 	return $content;
 }
 
-function set_content($page) {
+function set_content($type, $data, $vars = array()) {
 	$content =& content();
-	$content = $page;
+	switch($type) {
+		default:
+		case 'plain':
+			$content = $data;
+		break;
+
+		case 'file':
+			ob_start();
+			extract($vars);
+			include($data);
+			$content = ob_get_contents();
+			ob_end_clean();
+		break;
+	}
 }
 
 function get_content() {
@@ -133,6 +147,9 @@ function get_param($field = null, $default = '') {
  * Application entry point
  */
 function start() {
+
+	load_config();
+	load_libraries();
 
 	$url = parse_url($_SERVER['REQUEST_URI']);
 	$uri = isset($url['path']) ? $url['path'] : '';
@@ -186,14 +203,9 @@ function start() {
 			$page = $module->path.$page.'.php';
 
 			if (file_exists($page)) {
-				ob_start();
-				include($page);
-				set_content(ob_get_contents());
-				ob_end_clean();
+				set_content('file', $page);
 			}
-
 		}
-
 	}
 
 	if ( ! is_ajax()) {

@@ -45,28 +45,22 @@ function init_module($module) {
 		add_module($module, $modcfg);
 
 		if ($modcfg->validate) {
-
 			if ( ! has_session($modcfg->validate)) {
-
 				if (is_ajax()) {
-
 					echo json_encode(array(
 						'success' => false,
 						'message' => 'Your session has been expired!',
 						'redirect'=> site_url($modcfg->redirect)
 					));
-
 					exit();
-
 				} else {
 					redirect($modcfg->redirect);	
 				}
-				
 			}
 		}
-		
+	} else {
+		show_404("Module $module not found !");
 	}
 
 	return get_module($module);
-
 }

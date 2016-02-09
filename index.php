@@ -7,9 +7,5 @@ date_default_timezone_set('Asia/Jakarta');
 
 define('DS', DIRECTORY_SEPARATOR);
 define('BASEPATH', __DIR__.DS);
-
 include('libs/cores.php');
-
-load_config();
-load_libraries();
 start();

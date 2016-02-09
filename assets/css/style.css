@@ -9553,3 +9553,24 @@ h4.example-title {
 #login{
 	cursor:pointer;
 }
+
+
+.page-error .error-mark {
+    margin-bottom: 33px;
+}
+.page-error header h1 {
+    font-size: 10em;
+    font-weight: 400;
+}
+.page-error header p {
+    font-size: 30px;
+    margin-bottom: 30px;
+    text-transform: uppercase;
+}
+.page-error h2 {
+    margin-bottom: 30px;
+}
+.page-error .error-advise {
+    color: #a9afb5;
+    margin-bottom: 25px;
+}
