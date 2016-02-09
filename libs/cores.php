@@ -52,16 +52,20 @@ function &libraries() {
 function load_library($name) {
 	$libs =& libraries();
 	$file = BASEPATH.'libs/'.$name.'.php';
+	$load = false;
 	if ( ! isset($libs[$name])) {
 		if (file_exists($file)) {
 			$libs[] = $name;
 			include($file);
-		}	
+			$load = true;
+		}
+	} else {
+		$load = true;
 	}
+	return $load;
 }
 
 function load_libraries() {
-	
 	$libs = array(
 		'module',
 		'security',
@@ -71,16 +75,11 @@ function load_libraries() {
 	);
 
 	$libs = array_unique(array_merge($libs, get_config('autoload', array())));
-	print_r($libs);
-	exit();
-	$autoload = get_config('autoload', array());
-	$dbload   = get_config('database')->load;
+	$conn = get_config('database')->load;
 
-	foreach($autoload as $lib) {
-		$file = BASEPATH.'libs/'.$lib.'.php';
-		if (file_exists($file)) {
-			include($file);
-			if ($lib == 'database' && $dbload) {
+	foreach($libs as $lib) {
+		if (load_library($lib)) {
+			if ($lib == 'database' && $conn) {
 				db_start();
 			}
 		}

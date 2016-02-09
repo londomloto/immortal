@@ -8,12 +8,7 @@ date_default_timezone_set('Asia/Jakarta');
 define('DS', DIRECTORY_SEPARATOR);
 define('BASEPATH', __DIR__.DS);
 
-// cores libraries...
-include('libs/common.php');
-include('libs/module.php');
-include('libs/security.php');
-include('libs/url.php');
-include('libs/asset.php');
+include('libs/cores.php');
 
 load_config();
 load_libraries();

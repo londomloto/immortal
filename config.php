@@ -36,7 +36,6 @@ return array(
 	'suffix' => '.xyz',
 	'autoload' => array(
 		'database',
-		'session',
 		'pagination'
 	),
 	'database'=> $database
