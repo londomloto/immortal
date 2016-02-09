@@ -44,8 +44,36 @@ function load_config() {
 	}
 }
 
+function &libraries() {
+	static $libs = array();
+	return $libs;
+}
+
+function load_library($name) {
+	$libs =& libraries();
+	$file = BASEPATH.'libs/'.$name.'.php';
+	if ( ! isset($libs[$name])) {
+		if (file_exists($file)) {
+			$libs[] = $name;
+			include($file);
+		}	
+	}
+}
+
 function load_libraries() {
-	$autoload = get_config('autoload');
+	
+	$libs = array(
+		'module',
+		'security',
+		'url',
+		'asset',
+		'session'
+	);
+
+	$libs = array_unique(array_merge($libs, get_config('autoload', array())));
+	print_r($libs);
+	exit();
+	$autoload = get_config('autoload', array());
 	$dbload   = get_config('database')->load;
 
 	foreach($autoload as $lib) {

@@ -45,11 +45,11 @@ function csrf_token($name) {
 function csrf_inject() {
     $name  = md5(uniqid(rand(), true));
     $token = csrf_token($name);
-    echo "<input type='hidden' name='__xn' value='$name'>";
-    echo "<input type='hidden' name='__xt' value='$token'>";
+    echo "<input type='hidden' name='csrf_name' value='$name'>";
+    echo "<input type='hidden' name='csrf_token' value='$token'>";
 }
 
-function csrf_validate($name, $token) {
+function csrf_verify($name, $token) {
     $hash  = get_session($name);
     $valid = false;
     if ($hash === $token) {
@@ -61,9 +61,9 @@ function csrf_validate($name, $token) {
 
 function csrf_protect() {
     if (count($_POST) > 0) {
-        if (isset($_POST['__xn'], $_POST['__xt'])) {
-            $valid = csrf_validate($_POST['__xn'], $_POST['__xt']);
-            unset($_POST['__xn'], $_POST['__xt']);
+        if (isset($_POST['csrf_name'], $_POST['csrf_token'])) {
+            $valid = csrf_verify($_POST['csrf_name'], $_POST['csrf_token']);
+            unset($_POST['csrf_name'], $_POST['csrf_token']);
             if ( ! $valid) {
                 if (is_ajax()) {
                     print json_encode(array(
