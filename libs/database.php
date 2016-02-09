@@ -1,5 +1,9 @@
 <?php
 
+function db() {
+	return get_var('db');
+}
+
 function db_start() {
 
 	$config = get_config('database');
