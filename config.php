@@ -32,8 +32,10 @@ return array(
     'description' => 'simple php application',
     'keywords' => 'simple, php, application',
     'index' => '',
-    'default' => 'home',
+    'default' => 'home/docs',
     'suffix' => '.xyz',
+    'charset' => 'UTF-8',
+    'urlchars' => 'a-z 0-9~%.:_\-#?=&',
     'autoload' => array(
         'database',
         'pagination'

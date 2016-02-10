@@ -21,7 +21,7 @@ function get_module($name) {
 function init_module($module) {
 
     $modpath = BASEPATH.'modules/'.$module.'/';
-
+    
     if (is_dir($modpath)) {
 
         $modcfg = array(

@@ -11,6 +11,15 @@ function protocol() {
     return $protocol;
 }
 
+function validate_uri($uri) {
+    $chars = get_config('urlchars');
+    $uri   = str_replace('/', '', $uri);
+    if ( ! empty($chars) && ! preg_match('/^['.$chars.']+$/i', $uri)) {
+        trigger_error('Disallowed URL chars', E_USER_ERROR);
+    }
+    return $uri;
+}
+
 function base_uri() {
     static $base;
     if (empty($base)) {

@@ -94,24 +94,56 @@ function &content() {
 
 function set_content($type, $data, $vars = array()) {
     $content =& content();
+    $content = '';
+    add_content($type, $data, $vars);
+}
+
+function add_content($type, $data, $vars = array()) {
+    $content =& content();
     switch($type) {
         default:
         case 'plain':
-            $content = $data;
+            $content .= $data;
         break;
-
         case 'file':
-            ob_start();
-            extract($vars);
-            include($data);
-            $content = ob_get_contents();
-            ob_end_clean();
+            if (file_exists($data)) {
+                ob_start();
+                extract($vars);
+                include($data);
+                $content .= ob_get_contents();
+                ob_end_clean();
+            }
         break;
     }
 }
 
 function get_content() {
     $content =& content();
+    $errors  =& errors();
+
+    if (count($errors) > 0) {
+        $fatal  = false;
+        $errmsg = array();
+
+        foreach($errors as $err) {
+            $errmsg[] = $err['message'];
+            if ($err['kind'] == 'fatal') {
+                $fatal = true;
+                break;
+            }
+        }
+
+        $errmsg = implode('', $errmsg);
+        
+        if ($fatal) {
+            $content = $errmsg;
+        } else {
+            $content = $errmsg.$content;
+        }
+
+        clear_errors();
+    }
+
     return $content;
 }
 
@@ -151,6 +183,8 @@ function start() {
     load_config();
     load_libraries();
 
+    validate_uri($_SERVER['REQUEST_URI']);
+
     $url = parse_url($_SERVER['REQUEST_URI']);
     $uri = isset($url['path']) ? $url['path'] : '';
     $qry = isset($url['query']) ? $url['query'] : '';
@@ -171,10 +205,13 @@ function start() {
     set_var('qry', $qry);
 
     $segments = uri_segments();
-    $module   = isset($segments[0]) ? $segments[0] : '';
+    $segments = array_pad($segments, 1, '');
+    $module   = $segments[0];
 
     if ($uri == '/') {
-        $module = get_config('default');
+        $segments = explode('/', get_config('default'));
+        $segments = array_pad($segments, 1, '');
+        $module   = $segments[0];
     }
 
     $layout = 'main.php';
@@ -201,10 +238,8 @@ function start() {
             }
             
             $page = $module->path.$page.'.php';
+            set_content('file', $page);
 
-            if (file_exists($page)) {
-                set_content('file', $page);
-            }
         }
     }
 

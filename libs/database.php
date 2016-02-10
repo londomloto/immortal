@@ -101,7 +101,7 @@ function db_free_result($result) {
 }
 
 function db_fetch_all($sql, $bind = array()) {
-    $query = db_query($sql, $bind);
+    $query = is_string($sql) ? db_query($sql, $bind) : $sql;
     $data  = array();
     if ($query) {
         while($row = mysqli_fetch_array($query, MYSQLI_ASSOC)) {
@@ -113,13 +113,13 @@ function db_fetch_all($sql, $bind = array()) {
 }
 
 function db_fetch_one($sql, $bind = array()) {
-    $query = db_query($sql, $bind);
+    $query = is_string($sql) ? db_query($sql, $bind) : $sql;
     $data  = null;
     if ($query) {
         $data = mysqli_fetch_array($query, MYSQLI_ASSOC);
         db_free_result($query);
     }
-    return $data;   
+    return $data;
 }
 
 function db_total_rows() {

@@ -1,20 +1,67 @@
 <?php
 set_error_handler('custom_error');
 
+function &errors() {
+    static $errors = array();
+    return $errors;
+}
+
+function set_errors($message, $kind = 'common') {
+    clear_errors();
+    add_errors($message, $kind);
+}
+
+function add_errors($message, $kind = 'common') {
+    $errors =& errors();
+    $errors[] = array(
+        'kind' => $kind,
+        'message' => $message
+    );
+}
+
+function get_errors($kind = null) {
+    $errors =& errors();
+    if ( ! empty($kind)) {
+        return array_map(
+            function($err){
+                return $err['message'];
+            }, 
+            array_filter(
+                $errors, 
+                function($err) use ($kind) {
+                    return $err['kind'] == $kind;
+                }
+            )
+        );
+    } else {
+        return array_map(
+            function($err) {
+                return $err['message'];
+            },
+            $errors
+        );
+    }
+}
+
+function clear_errors() {
+    $errors =& errors();
+    $errors = array();
+}
+
 function get_error_name($level) {
     $maps = array(
-        E_ERROR => 'Error',
-        E_WARNING => 'Warning',
-        E_PARSE => 'Parsing Error',
-        E_NOTICE => 'Notice',
-        E_CORE_ERROR => 'Core Error',
-        E_CORE_WARNING => 'Core Warning',
-        E_COMPILE_ERROR => 'Compile Error',
-        E_COMPILE_WARNING => 'Compile Warning',
-        E_USER_ERROR => 'User Error',
-        E_USER_WARNING => 'User Warning',
-        E_USER_NOTICE => 'User Notice',
-        E_STRICT => 'Runtime Notice'
+        E_ERROR => 'E-ERROR',
+        E_WARNING => 'E-WARNING',
+        E_PARSE => 'E-PARSE',
+        E_NOTICE => 'E-NOTICE',
+        E_CORE_ERROR => 'E-CORE-ERROR',
+        E_CORE_WARNING => 'E-CORE-WARNING',
+        E_COMPILE_ERROR => 'E-COMPILE-ERROR',
+        E_COMPILE_WARNING => 'E-COMPILE-WARNING',
+        E_USER_ERROR => 'E-USER-ERROR',
+        E_USER_WARNING => 'E-USER-WARNING',
+        E_USER_NOTICE => 'E-USER-NOTICE',
+        E_STRICT => 'E-STRICT'
     );
     return isset($maps[$level]) ? $maps[$level] : 'Unknown Error';
 }
@@ -37,16 +84,9 @@ function is_fatal_error($level) {
 }
 
 function custom_error($level, $message, $file, $line) {
-    $name = get_error_name($level);
-    if (is_fatal_error() || is_error_on()) {
-        show_general_error($level, $message, $file, $line);
-    }
-}
-
-function show_general_error($code, $message, $file = null, $line = null) {
     $vars = array(
-        'error_code' => $code,
-        'error_name' => get_error_name($code),
+        'error_code' => $level,
+        'error_name' => get_error_name($level),
         'error_message' => $message, 
         'error_file' => $file,
         'error_line' => $line
@@ -58,10 +98,14 @@ function show_general_error($code, $message, $file = null, $line = null) {
         ob_start();
         extract($vars);
         include($file);
-        $content = ob_get_contents();
+        $message = ob_get_contents();
         ob_end_clean();
-        echo $content;
+        if (is_error_on()) {
+            $kind = is_fatal_error($level) ? 'fatal' : 'common';
+            add_errors($message, $kind);
+        }
     }
+
 }
 
 function show_error($code, $message, $file = null, $line = null) {
@@ -74,7 +118,12 @@ function show_error($code, $message, $file = null, $line = null) {
     $file = BASEPATH."modules/errors/error.php";
 
     if (file_exists($file)) {
-        set_content('file', $file, $vars);
+        ob_start();
+        extract($vars);
+        include($file);
+        $message = ob_get_contents();
+        ob_end_clean();
+        add_errors($message, 'fatal');
     }
 }
 

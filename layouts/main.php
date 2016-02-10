@@ -159,6 +159,12 @@
                             </a>
                             <ul class="site-menu-sub">
                                 <li class="site-menu-item">
+                                    <a href="<?php echo site_url('home/docs'); ?>" data-push="1">
+                                        <i class="site-menu-icon " aria-hidden="true"></i>
+                                        <span class="site-menu-title">Documentation</span>
+                                    </a>
+                                </li>
+                                <li class="site-menu-item">
                                     <a href="<?php echo site_url('home/company'); ?>" data-push="1">
                                         <i class="site-menu-icon " aria-hidden="true"></i>
                                         <span class="site-menu-title">Company</span>

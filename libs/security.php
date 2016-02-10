@@ -17,7 +17,7 @@ function xss_protect($data) {
                 $data = addslashes($data);
             }
             $data = strip_tags($data);
-            $data = htmlspecialchars($data);
+            $data = htmlspecialchars($data, ENT_COMPAT | ENT_HTML401, get_config('charset'));
         }
     }
     return $data;

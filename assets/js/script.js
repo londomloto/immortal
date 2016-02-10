@@ -81,6 +81,24 @@ function loadPage(url, push) {
 	setLastUrl(url);
 }
 
+function loadCss(url) {
+	var loaded = false,
+		links = $('link'),
+		i;
+	$.each(links, function(i, l){
+		if ($(l).attr('href') === url) {
+			loaded = true;
+			return false;
+		}
+	});
+	if ( ! loaded) {
+		var link = document.createElement('link');
+		link.rel  = 'stylesheet';
+		link.href = url;
+		document.getElementsByTagName('head')[0].appendChild(link);
+	}
+}
+
 $(document).ready(function(){
 
 	function dispatch(e) {

@@ -725,11 +725,11 @@ samp {
   font-family: Menlo, Monaco, Consolas, "Courier New", monospace;
 }
 code {
-  padding: 2px 4px;
+  /*padding: 2px 4px;
   font-size: 90%;
   color: #5683ad;
   background-color: rgba(232, 241, 248, .1);
-  border-radius: 3px;
+  border-radius: 3px;*/
 }
 kbd {
   padding: 2px 4px;
@@ -748,7 +748,8 @@ kbd kbd {
           box-shadow: none;
 }
 pre {
-  display: block;
+  font-size: 13px;
+  /*display: block;
   padding: 10.5px;
   margin: 0 0 11px;
   font-size: 13px;
@@ -758,15 +759,15 @@ pre {
   word-wrap: break-word;
   background-color: #fff;
   border: 1px solid #ecf5fc;
-  border-radius: 3px;
+  border-radius: 3px;*/
 }
 pre code {
-  padding: 0;
+  /*padding: 0;
   font-size: inherit;
   color: inherit;
   white-space: pre-wrap;
   background-color: transparent;
-  border-radius: 0;
+  border-radius: 0;*/
 }
 .pre-scrollable {
   max-height: 340px;
