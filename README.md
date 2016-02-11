@@ -55,6 +55,14 @@ Fungsi ini digunakan untuk melakukan query data
 $query = db_query('SELECT * FROM products');
 $prods = db_fetch_all($query);
 ```
+Fungsi ini juga dapat digunakan untuk menjalankan query DML (insert, update, delete)
+```php
+$insert = db_query('INSERT INTO users(email, name) VALUES (?, ?)', array('foo@bar.com', 'foo'));
+
+if ($insert) {
+  // do stuff...
+}
+```
 ##### `db_fetch_all($query)`
 Fungsi ini digunakan untuk mendapatkan result dari query
 ##### `db_fetch_all($sql, $bind = null)`
@@ -65,4 +73,17 @@ $products = db_fetch_all('SELECT * FROM products WHERE status = ?', array('activ
 foreach($products as $prod) {
   echo $prod['name'];
 }
+```
+##### `db_fetch_one($sql, $bind = null)`
+Fungsi ini digunakan untuk mendapatkan single result
+```php
+$user = db_fetch_one('SELECT * FROM users WHERE email = ?', array('john@example.com'));
+print_r($user);
+
+// output:
+Array(
+  [id] => 1
+  [email] => john@example.com
+  [active] => 1
+)
 ```
