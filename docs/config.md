@@ -1,5 +1,6 @@
 ### File Konfigurasi
 
+##### Konfigurasi Global
 File configurasi disimpan di dalam file `/config.php`. File ini digunakan untuk menyimpan konfigurasi global.
 
 ```php
@@ -88,5 +89,37 @@ return array(
         'name' => 'immortal',
         'load' => true  // otomatis melakukan koneksi ke database
     )
+);
+```
+
+##### Konfigurasi Per Module
+Setiap module dapat memiliki konfigurasi sendiri dan disimpan di dalam file `/MODULE/config.php`
+
+```php
+return array(
+	/**
+    * Module title
+    */
+	'title' => 'Profile',
+    
+    /**
+    * Sesi yang divalidasi (di-cek) ketika mengakses module.
+    * Sebagai contoh, untuk dapat mengakses module `profile`,
+    * maka harus ada sesi `user`, jika tidak ada akan di-redirect
+    * ke halaman validasi (login).
+	*
+	* Jika module tidak perlu validasi, maka cukup isi dengan `false`
+    */
+    'validate' => 'user',
+    
+    /**
+    * Halaman validasi
+    */
+    'redirect' => 'login',
+    
+    /**
+    * Layout (template) yang digunakan oleh module
+    */
+    'layout' => 'main'
 );
 ```
