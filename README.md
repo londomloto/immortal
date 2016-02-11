@@ -33,3 +33,28 @@ Fungsi ini digunakan untuk mengakses data yang disimpan secara global.
 ```php
 get_var('foo');   // bar
 ```
+
+### Database Helper
+### `db()`
+Fungsi ini digunakan untuk mendapatkan objek koneksi aktif
+### `db_start()`
+Fungsi ini digunakan untuk melakukan koneksi database
+### `db_stop()`
+Fungsi ini digunakan untuk memutus koneksi database
+### `db_query($sql, $bind = array())
+Fungsi ini digunakan untuk melakukan query data
+```php
+$query = db_query('SELECT * FROM products');
+$prods = db_fetch_all($query);
+```
+### `db_fetch_all($query)`
+Fungsi ini digunakan untuk mendapatkan result dari query
+### `db_fetch_all($sql, $bind = array())
+Fungsi ini digunakan untuk mendapatkan result dari sql
+```php
+$products = db_fetch_all('SELECT * FROM products WHERE status = ?', array('active'));
+
+foreach($products as $prod) {
+  echo $prod['name'];
+}
+```
