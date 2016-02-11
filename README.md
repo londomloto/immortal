@@ -8,6 +8,7 @@ Aplikasi yang dibuat dengan php procedural untuk kebutuhan pembelajaran.
 * [URL Helper](docs/url.md)
 * [Session Helper](docs/session.md)
 * [Database Helper](docs/database.md)
+* [Penggunaan Asset](docs/asset.md)
   
 ### Authors:
 * [londomloto](https://github.com/londomloto)

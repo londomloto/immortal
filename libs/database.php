@@ -221,7 +221,24 @@ function db_update($table, $data, $keys = null) {
 }
 
 function db_delete($table, $keys = null) {
+    $names = db_field_name($table);
+    $binds = array();
+    $where = array();
 
+    if ( ! empty($keys)) {
+        foreach($keys as $key => $val) {
+            if (in_array($key, $names)) {
+                $where[] = "$key = ?";
+                $binds[] = $val;
+            }
+        }
+    }
+
+    $sql = "DELETE FROM $table WHERE 1 = 1";
+    if ( ! empty($where)) {
+        $sql .= " AND ".implode(" AND ", $where);
+    }
+    return db_query($sql, $binds);
 }
 
 function db_error_handler($no, $msg, $file, $line) {
