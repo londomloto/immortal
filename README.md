@@ -22,6 +22,14 @@ return array(
   'version' => '1.0.0'
 )
 ```
+### Format URL
+Varian format URL
+```php
+http://example.com/user/profile
+http://example.com/user/profile.html
+http://example.com/products/notebook/asus
+http://example.com/products?category=notebook&name=asus
+```
 ### Cores Helper
 ##### `set_var($key, $value)`
 Fungsi ini digunakan untuk menyimpan data yang dapat diakses secara global.
@@ -41,7 +49,7 @@ Fungsi ini digunakan untuk mendapatkan objek koneksi aktif
 Fungsi ini digunakan untuk melakukan koneksi database
 ##### `db_stop()`
 Fungsi ini digunakan untuk memutus koneksi database
-##### `db_query($sql, $bind = array())`
+##### `db_query($sql, $bind = null)`
 Fungsi ini digunakan untuk melakukan query data
 ```php
 $query = db_query('SELECT * FROM products');
@@ -49,7 +57,7 @@ $prods = db_fetch_all($query);
 ```
 ##### `db_fetch_all($query)`
 Fungsi ini digunakan untuk mendapatkan result dari query
-##### `db_fetch_all($sql, $bind = array())`
+##### `db_fetch_all($sql, $bind = null)`
 Fungsi ini digunakan untuk mendapatkan result dari sql
 ```php
 $products = db_fetch_all('SELECT * FROM products WHERE status = ?', array('active'));
