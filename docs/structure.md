@@ -40,3 +40,44 @@ Contoh layout:
 </body>
 </html>
 ```
+
+##### Clean URL
+Settingan clean url apache via .htaccess:
+```php
+RewriteEngine On
+RewriteCond $1 !^(index\.php|assets|docs)
+RewriteRule ^(.*)$ index.php?/$1 [L]
+```
+
+Settingan clean url nginx:
+```php
+server {
+	listen 80;
+    ...
+    ...
+    location /immortal/ {
+    	if ($request_uri ~* index/?$) {
+        	rewrite ^/immortal/(.*)/index/?$ /immortal/$1 permanent;
+        }
+        
+        if (!-d $request_filename) {
+            rewrite ^/immortal/(.+)/$ /immortal/$1 permanent;
+        }
+        
+        if (!-e $request_filename) {
+            rewrite ^/immortal/(.*)$ /immortal/index.php?/$1 last;
+            break;
+        }
+        
+        # access folder
+        
+        location ~ ^/assets {
+            autoindex off;
+        }
+        
+        location ~ ^/(\.ht|libs|modules|layouts) {
+            deny all;
+        }
+    }
+}
+```
