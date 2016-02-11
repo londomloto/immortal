@@ -139,19 +139,25 @@ function db_list_tables() {
 }
 
 function db_field_data($table) {
-    $fields = db_fetch_all("SHOW COLUMNS FROM $table");
-    $result = array();
+    static $meta = array();
 
-    foreach($fields as $fld) {
-        $row = array();
+    if ( ! isset($meta[$table])) {
+        $fields = db_fetch_all("SHOW COLUMNS FROM $table");
+        $result = array();
 
-        $row['type'] = preg_replace('/(\(.*\))/', '', $fld['Type']);
-        $row['name'] = $fld['Field'];
-        $row['primary'] = $fld['Key'] == 'PRI';
+        foreach($fields as $fld) {
+            $row = array();
 
-        $result[] = $row;
+            $row['type'] = preg_replace('/(\(.*\))/', '', $fld['Type']);
+            $row['name'] = $fld['Field'];
+            $row['primary'] = $fld['Key'] == 'PRI';
+
+            $result[] = $row;
+        }
+
+        $meta[$table] = $result;
     }
-    return $result;
+    return $meta[$table];
 }
 
 function db_field_name($table) {
