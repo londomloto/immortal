@@ -1,13 +1,13 @@
 # immortal
-Procedural php application suitable for learning purposes.
+Aplikasi yang dibuat dengan php procedural untuk kebutuhan pembelajaran.
 
 Authors:
 * londomloto
 * harahapariefbenardi
 
-## Documentation
-### Configuration
-Application config:
+## Dokumentasi
+### Konfigurasi
+Konfigurasi aplikasi disimpan di dalam file `config.php`:
 
 ```php
 return array(
