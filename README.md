@@ -2,7 +2,7 @@
 Aplikasi yang dibuat dengan php procedural untuk kebutuhan pembelajaran.
 
 ### Dokumentasi
-* [Struktur Aplikasi](structure.md)
+* [Struktur Aplikasi](docs/structure.md)
 * [Konfigurasi](docs/config.md)
 * [Cores Helper](docs/cores.md)
 * [URL Helper](docs/url.md)
