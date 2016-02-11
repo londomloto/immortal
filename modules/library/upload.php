@@ -4,3 +4,8 @@
 <?php echo breadcrumb(); ?>
 
 <h2>Upload</h2>
+
+<?php
+/*$update = db_update('users', array('fullname' => 'Agus Darmaji', 'passwd' => '2'), array('email' => 'agus@example.com'));
+var_dump($update);*/
+?>

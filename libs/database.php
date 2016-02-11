@@ -42,7 +42,7 @@ function db_escape($value) {
     return mysqli_real_escape_string($db, stripslashes($value));
 }
 
-function db_query($sql, $bind = array()) {
+function db_query($sql, $bind = null) {
     $db = get_var('db');
 
     $query = false;
@@ -51,7 +51,7 @@ function db_query($sql, $bind = array()) {
 
     if (mysqli_stmt_prepare($stmt, $sql)) {
 
-        if (count($bind) > 0) {
+        if ( ! empty($bind)) {
 
             $types  = '';
             $values = array();
@@ -100,7 +100,7 @@ function db_free_result($result) {
     mysqli_free_result($result);
 }
 
-function db_fetch_all($sql, $bind = array()) {
+function db_fetch_all($sql, $bind = null) {
     $query = is_string($sql) ? db_query($sql, $bind) : $sql;
     $data  = array();
     if ($query) {
@@ -112,7 +112,7 @@ function db_fetch_all($sql, $bind = array()) {
     return $data;
 }
 
-function db_fetch_one($sql, $bind = array()) {
+function db_fetch_one($sql, $bind = null) {
     $query = is_string($sql) ? db_query($sql, $bind) : $sql;
     $data  = null;
     if ($query) {
@@ -152,6 +152,76 @@ function db_field_data($table) {
         $result[] = $row;
     }
     return $result;
+}
+
+function db_field_name($table) {
+    $fields = db_field_data($table);
+    return array_map(function($f){ return $f['name']; }, $fields);
+}
+
+function db_insert($table, $data) {
+    $names = db_field_name($table);
+    $valid = false;
+    
+    $binds = array();
+    $field = array();
+    $token = array();
+
+    foreach($data as $key => $val) {
+        if (in_array($key, $names)) {
+            $field[] = $key;
+            $binds[] = $val;
+            $token[] = '?';
+
+            $valid   = true;
+        }
+    }
+
+    if ($valid) {
+        $sql = "INSERT INTO $table (".implode(", ", $field).") VALUES (".implode(", ", $token).")";
+        return db_query($sql, $binds);
+    }
+
+    return false;
+}
+
+function db_update($table, $data, $keys = null) {
+    $names = db_field_name($table);
+    $valid = false;
+
+    $field = array();
+    $binds = array();
+    $where = array();
+
+    foreach($data as $key => $val) {
+        if (in_array($key, $names)) {
+            $field[] = "$key = ?";
+            $binds[] = $val;
+            $valid   = true;
+        }
+    }
+
+    if ( ! empty($keys)) {
+        foreach($keys as $key => $val) {
+            if (in_array($key, $names)) {
+                $where[] = "$key = ?";
+                $binds[] = $val;
+            }
+        }
+    }
+
+    if ($valid) {
+        $sql = "UPDATE $table SET ".implode(", ", $field)." WHERE 1 = 1";
+        if ( ! empty($where)) {
+            $sql .= " AND ".implode(" AND ", $where);
+        }
+        return db_query($sql, $binds);
+    }
+    return false;
+}
+
+function db_delete($table, $keys = null) {
+
 }
 
 function db_error_handler($no, $msg, $file, $line) {

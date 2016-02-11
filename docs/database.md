@@ -45,3 +45,51 @@ Array(
   [active] => 1
 )
 ```
+##### `db_insert($table, $data)`
+Fungsi ini digunakan untuk menambah record ke dalam tabel.
+```php
+$insert = db_insert(
+	'users',
+    array(
+    	'email' => 'john@example.com',
+        'fullname' => 'John Doe',
+        'dob' => '2001-07-03'
+    )
+);
+
+if ($insert) {
+	// ...
+}
+```
+##### `db_update($table, $data, $keys = null)`
+Fungsi ini digunakan untuk mengupdate record di dalam tabel.
+```php
+$update = db_update(
+	'users',
+    array(
+    	'fullname' => 'John Doe'
+    ),
+    array(
+    	'email' => 'john@example.com'
+    )
+);
+
+if ($update) {
+	// ...
+}
+```
+##### `db_delete($table, $keys = null)`
+Fungsi ini digunakan untuk menghapus record di dalam tabel.
+```php
+$delete = db_delete(
+	'users',
+    array(
+    	'email' => 'john@example.com'
+    )
+);
+
+if ($delete) {
+	// ...
+}
+```
+
