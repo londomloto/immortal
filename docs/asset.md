@@ -6,6 +6,7 @@ Untuk menampilkan gambar dalam bentuk thumbnail gunakan format URI berikut:
 image/thumb/100x100/img/profile.png
 |----------|-------|---------------|
 			   |		   |____________ path file
+               |
                |________________________ ukuran thumbnail
 ```
 Contoh:
