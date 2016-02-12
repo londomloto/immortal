@@ -17,10 +17,10 @@ function db_start() {
     );
 
     if (mysqli_connect_errno()) {
-        db_set_error(mysqli_connect_error());
+        add_errors(mysqli_connect_error());
     } else {
         if ( ! mysqli_set_charset($db, 'utf8')) {
-            db_set_error(mysqli_error($db));
+            add_errors(mysqli_error($db));
         } else {
             set_var('db', $db);
             $retval = true;
@@ -68,29 +68,21 @@ function db_query($sql, $bind = null) {
             }
 
             $params = array_merge(array($stmt, $types), $bind);
-            
-            set_error_handler('db_error_handler');
-
-            try {
-                call_user_func_array('mysqli_stmt_bind_param', $params);
-            } catch(Exception $e) {
-                db_set_error($e->getMessage());
-            }
-
-            restore_error_handler();
+            call_user_func_array('mysqli_stmt_bind_param', $params);
 
         }
 
         if (mysqli_stmt_execute($stmt)) {
             $query = (preg_match('/^(SELECT|SHOW)/i', $sql)) ? mysqli_stmt_get_result($stmt) : true;
         } else {
-            db_set_error(mysqli_error($db));
+            // trigger_error(mysqli_error($db), E_USER_WARNING);
+            trigger_error(mysqli_stmt_error($stmt), E_USER_WARNING);
         }
 
         mysqli_stmt_close($stmt);
 
     } else {
-        db_set_error(mysqli_error($db));
+        trigger_error(mysqli_error($db), E_USER_WARNING);
     }
 
     return $query;
@@ -245,23 +237,4 @@ function db_delete($table, $keys = null) {
         $sql .= " AND ".implode(" AND ", $where);
     }
     return db_query($sql, $binds);
-}
-
-function db_error_handler($no, $msg, $file, $line) {
-    throw new Exception(sprintf('%s (%s:%d)', $msg, $file, $line), $no);
-}
-
-function &db_errors() {
-    static $errors = [];
-    return $errors;
-}
-
-function db_set_error($message) {
-    $errors =& db_errors();
-    $errors[] = $message;
-}
-
-function db_get_errors() {
-    $errors =& db_errors();
-    return $errors;
 }
