@@ -55,6 +55,7 @@ function loadPage(url, push) {
 	.done(function(response){
 		
 		response = (response || '').replace(/(^\s+)/i, '');
+		$('body').mask({transparent: true});
 
 		if (/^[\{\[]"success/.test(response)) {
 			try {
@@ -68,6 +69,7 @@ function loadPage(url, push) {
 			} catch(e) {}
 		} else {
 			$('.page-content').empty().html(response);	
+			$('body').unmask();
 		}
 
 	});
