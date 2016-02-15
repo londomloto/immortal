@@ -238,3 +238,7 @@ function db_delete($table, $keys = null) {
     }
     return db_query($sql, $binds);
 }
+
+function db_insert_id() {
+    return mysqli_insert_id(db());
+}

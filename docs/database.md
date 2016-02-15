@@ -92,4 +92,12 @@ if ($delete) {
 	// ...
 }
 ```
+##### `db_insert_id()`
+Fungsi ini digunakan untuk mendapatkan ID autoincrement.
+```php
+$insert = db_insert('users', array('email' => 'john@example.com'));
 
+if ($insert) {
+	echo db_insert_id();
+}
+```
