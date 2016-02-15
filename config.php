@@ -35,7 +35,7 @@ return array(
     'default' => 'home/docs',
     'suffix' => '.xyz',
     'charset' => 'UTF-8',
-    'urlchars' => 'a-z 0-9~%.:_\-#?=&',
+    'urlchars' => 'a-z 0-9~%.:_\-',
     'autoload' => array(
         'database',
         'pagination'

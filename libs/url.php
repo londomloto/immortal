@@ -12,9 +12,10 @@ function protocol() {
 }
 
 function validate_uri($uri) {
-    $chars = get_config('urlchars');
-    $uri   = str_replace('/', '', $uri);
-    if ( ! empty($chars) && ! preg_match('/^['.$chars.']+$/i', $uri)) {
+    $chr = '?&#=+'.get_config('urlchars');
+    $uri = str_replace('/', '', $uri);
+
+    if ( ! empty($chr) && ! preg_match('|^['.$chr.']+$|i', $uri)) {
         trigger_error('Disallowed URL chars', E_USER_ERROR);
     }
     return $uri;
@@ -67,7 +68,7 @@ function site_url($uri, $query = '') {
 }
 
 function current_url($query = '') {
-    $url  = preg_replace('/\/$/', '', base_url()).get_var('uri');
+    $url  = rtrim(base_url(), '/').get_var('uri');
     $qry  = get_var('qry');
     
     if ( ! empty($qry)) {

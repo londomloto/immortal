@@ -4,7 +4,3 @@
 <?php echo breadcrumb(); ?>
 
 <h2>Upload</h2>
-<?php
-$products = db_fetch_all('SELECT * FROM products WHERE slug = ? AND name = ?', array('1'));
-print_r($products);
-?>
