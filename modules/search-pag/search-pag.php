@@ -137,7 +137,8 @@
 
             if ( ! hasSession) {
                 alert('Untuk melihat detail, Anda harus login dulu');
-                loadPage(siteUrl('logpel') + '?ref=search-pag');
+                //loadPage(siteUrl('logpel') + '?ref=search-pag');
+				showModal();
             } else {
                 loadPage(siteUrl('products/' + slug));
             }

@@ -4,5 +4,5 @@
         <p><?php echo $error_name; ?></p>
     </header>
     <p class="error-advise"><?php echo strtoupper($error_message); ?></p>
-    <a href="<?php echo base_url(); ?>" data-push="1" class="btn btn-primary btn-round">GO TO HOME PAGE</a>
+    <a href="<?php echo base_url(); ?>" data-push="1" class="btn btn-primary btn-round">Kembali ke Beranda</a>
 </div>
