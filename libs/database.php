@@ -4,6 +4,16 @@ function db() {
     return get_var('db');
 }
 
+function db_native_driver() {
+    static $native;
+
+    if ( ! $native) {
+        $native = function_exists('mysqli_stmt_get_result');
+    }
+
+    return $native;
+}
+
 function db_start() {
 
     $config = get_config('database');
@@ -69,35 +79,101 @@ function db_query($sql, $bind = null) {
 
             $params = array_merge(array($stmt, $types), $bind);
             call_user_func_array('mysqli_stmt_bind_param', $params);
-
         }
 
         if (mysqli_stmt_execute($stmt)) {
-            $query = (preg_match('/^(SELECT|SHOW)/i', $sql)) ? mysqli_stmt_get_result($stmt) : true;
+            if (preg_match('/^(SELECT|SHOW)/i', $sql)) {
+                if (db_native_driver()) {
+                    $query = mysqli_stmt_get_result($stmt);
+                    mysqli_stmt_close($stmt);
+                } else {
+                    return $stmt;
+                    /*$meta = mysqli_stmt_result_metadata($stmt);
+                    $args = array_map(function($f){ return $f->name; }, mysqli_fetch_fields($meta));
+                    array_unshift($args, $stmt);
+                    call_user_func_array('mysqli_stmt_bind_result', $args);    
+                    while(mysqli_stmt_fetch($stmt)) {
+                        var_dump($id);
+                    }*/
+                }
+            } else {
+                $query = TRUE;
+                mysqli_stmt_close($stmt);
+            }
         } else {
-            // trigger_error(mysqli_error($db), E_USER_WARNING);
             trigger_error(mysqli_stmt_error($stmt), E_USER_WARNING);
         }
-
-        mysqli_stmt_close($stmt);
-
     } else {
         trigger_error(mysqli_error($db), E_USER_WARNING);
     }
-
     return $query;
 }
 
+/**
+ * free up memory for mysqli_result (deprecated)
+ */
 function db_free_result($result) {
-    mysqli_free_result($result);
+    if ($result instanceof mysqli_stmt) {
+        $meta = mysqli_stmt_result_metadata($result);
+        mysqli_stmt_close($result);
+        mysqli_free_result($meta);
+    } else {
+        mysqli_free_result($result);    
+    }
+}
+
+function db_list_fields($result) {
+    if ($result instanceof mysqli_stmt) {
+        $meta = mysqli_stmt_result_metadata($result);
+        $fields = mysqli_fetch_fields($meta);
+    } else {
+        $fields = mysqli_fetch_fields($query);
+    }
+    return array_map(function($field) { return $field->name; }, $fields);
+}
+
+function db_bind_result($stmt) {
+    $vars = db_list_fields($stmt);
+    $size = count($vars);
+    $args = array();
+
+    for ($i = 0; $i < $size; $i++) {
+        $args[] = &$vars[$i];
+    }
+
+    array_unshift($args, $stmt);
+    call_user_func_array('mysqli_stmt_bind_result', $args);
+
+    return $vars;
 }
 
 function db_fetch_all($sql, $bind = null) {
     $query = is_string($sql) ? db_query($sql, $bind) : $sql;
     $data  = array();
     if ($query) {
-        while($row = mysqli_fetch_array($query, MYSQLI_ASSOC)) {
-            $data[] = $row;
+        if ($query instanceof mysqli_stmt) {
+
+            $vars = db_list_fields($query);
+            $size = count($vars);
+            $args = $vars;
+
+            for ($i = 0; $i < $size; $i++) {
+                $args[$i] = &$args[$i];
+            }
+
+            call_user_func_array('mysqli_stmt_bind_result', array_merge(array($query), $args));
+
+            while(mysqli_stmt_fetch($query)) {
+                $row = array();
+                for ($i = 0; $i < $size; $i++) {
+                    $row[$vars[$i]] = $args[$i];
+                }
+                $data[] = $row;
+            }
+        } else {
+            while($row = mysqli_fetch_array($query, MYSQLI_ASSOC)) {
+                $data[] = $row;
+            }
         }
         db_free_result($query);
     }
@@ -108,7 +184,26 @@ function db_fetch_one($sql, $bind = null) {
     $query = is_string($sql) ? db_query($sql, $bind) : $sql;
     $data  = null;
     if ($query) {
-        $data = mysqli_fetch_array($query, MYSQLI_ASSOC);
+        if ($query instanceof mysqli_stmt) {
+            $vars = db_list_fields($query);
+            $size = count($vars);
+            $args = $vars;
+
+            for ($i = 0; $i < $size; $i++) {
+                $args[$i] = &$args[$i];
+            }
+
+            call_user_func_array('mysqli_stmt_bind_result', array_merge(array($query), $args));
+            
+            if (mysqli_stmt_fetch($query)) {
+                $data = array();
+                for ($i = 0; $i < $size; $i++) {
+                    $data[$vars[$i]] = $args[$i];
+                }
+            }
+        } else {
+            $data = mysqli_fetch_array($query, MYSQLI_ASSOC);
+        }
         db_free_result($query);
     }
     return $data;
