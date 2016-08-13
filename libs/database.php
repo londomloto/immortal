@@ -1,16 +1,15 @@
 <?php
-
 function db() {
     return get_var('db');
 }
 
 function db_native_driver() {
-    static $native;
+    static $native = '__';
 
-    if ( ! $native) {
+    if ($native == '__') {
         $native = function_exists('mysqli_stmt_get_result');
     }
-
+    
     return $native;
 }
 
