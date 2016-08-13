@@ -88,13 +88,6 @@ function db_query($sql, $bind = null) {
                     mysqli_stmt_close($stmt);
                 } else {
                     return $stmt;
-                    /*$meta = mysqli_stmt_result_metadata($stmt);
-                    $args = array_map(function($f){ return $f->name; }, mysqli_fetch_fields($meta));
-                    array_unshift($args, $stmt);
-                    call_user_func_array('mysqli_stmt_bind_result', $args);    
-                    while(mysqli_stmt_fetch($stmt)) {
-                        var_dump($id);
-                    }*/
                 }
             } else {
                 $query = TRUE;
