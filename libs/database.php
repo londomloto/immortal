@@ -125,21 +125,6 @@ function db_list_fields($result) {
     return array_map(function($field) { return $field->name; }, $fields);
 }
 
-function db_bind_result($stmt) {
-    $vars = db_list_fields($stmt);
-    $size = count($vars);
-    $args = array();
-
-    for ($i = 0; $i < $size; $i++) {
-        $args[] = &$vars[$i];
-    }
-
-    array_unshift($args, $stmt);
-    call_user_func_array('mysqli_stmt_bind_result', $args);
-
-    return $vars;
-}
-
 function db_fetch_all($sql, $bind = null) {
     $query = is_string($sql) ? db_query($sql, $bind) : $sql;
     $data  = array();
