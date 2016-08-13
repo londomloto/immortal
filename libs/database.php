@@ -110,7 +110,7 @@ function db_query($sql, $bind = null) {
 }
 
 /**
- * free up memory for mysqli_result (deprecated)
+ * free up memory for mysqli_result or mysqli_stmt
  */
 function db_free_result($result) {
     if ($result instanceof mysqli_stmt) {
