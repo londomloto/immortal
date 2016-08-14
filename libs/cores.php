@@ -186,16 +186,38 @@ function start() {
     validate_uri($_SERVER['REQUEST_URI']);
 
     $url = parse_url($_SERVER['REQUEST_URI']);
-    $uri = isset($url['path']) ? $url['path'] : '';
-    $qry = isset($url['query']) ? $url['query'] : '';
 
+    if (isset($url['path'])) {
+        $uri = $url['path'];
+    } else {
+        $uri = $_SERVER['REQUEST_URI'];
+        $pos = strpos($uri, '?');
+        $uri = $pos !== FALSE ? substr($uri, 0, $pos) : $uri;
+    }
+
+    $qry = isset($url['query']) ? $url['query'] : '';
     $svc = $_SERVER['SCRIPT_NAME'];
 
-    if (strpos($uri, $svc) === 0) {
-        $uri = (string) substr($uri, strlen($svc));
-    } else if (strpos($uri, dirname($svc)) === 0) {
-        $uri = (string) substr($uri, strlen(dirname($svc)));
+    if (isset($svc[0])) {
+        $dir = str_replace('\\', '/', dirname($svc));
+        if ($dir != '/') {
+            if (strpos($uri, $svc) === 0) {
+                $uri = (string) substr($uri, strlen($svc));
+            } else if (strpos($uri, $dir) === 0) {
+                $uri = (string) substr($uri, strlen($dir));
+            }
+        }
     }
+
+    if (trim($uri, '/') === '' && strncmp($qry, '/', 1) === 0) {
+        $tmp = explode('?', $qry, 2);
+        $uri = $tmp[0];
+        $_SERVER['QUERY_STRING'] = isset($tmp[1]) ? $tmp[1] : '';
+    } else {
+        $_SERVER['QUERY_STRING'] = $qry;
+    }
+
+    parse_str($_SERVER['QUERY_STRING'], $_GET);
 
     if ($uri == '') {
         $uri = '/';

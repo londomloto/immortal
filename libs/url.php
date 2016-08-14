@@ -99,7 +99,8 @@ function append_url($url, $query) {
     // PHP 4: undefined index `path`
     if ( ! isset($parsed['path'])) {
         $uri = $_SERVER['REQUEST_URI'];
-        $parsed['path'] = substr($uri, 0, strpos($uri, '?'));
+        $pos = strpos($uri, '?');
+        $parsed['path'] = $pos !== FALSE ? substr($uri, 0, $pos) : $uri;
     }
 
     if (isset($parsed['query'])) {
