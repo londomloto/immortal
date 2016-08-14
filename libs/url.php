@@ -15,7 +15,7 @@ function validate_uri($uri) {
     $chr = '?&#=+'.get_config('urlchars');
     $uri = str_replace('/', '', $uri);
 
-    if ( ! empty($chr) && ! preg_match('|^['.$chr.']+$|i', $uri)) {
+    if ( ! empty($uri) && ! empty($chr) && ! preg_match('|^['.$chr.']+$|i', $uri)) {
         trigger_error('Disallowed URL chars', E_USER_ERROR);
     }
     return $uri;
