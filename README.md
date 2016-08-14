@@ -1,5 +1,5 @@
 # immortal
-Framework sederhana yang dibangun dengan konsep oop-less, cocok untuk tahap pembelajaran.
+Framework sederhana yang dibangun dengan konsep oop-less, cocok untuk pembelajaran fundamental sebuah framework.
 
 ### Dokumentasi
 * [Struktur Aplikasi](docs/structure.md)
