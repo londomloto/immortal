@@ -1,5 +1,5 @@
 # immortal
-Aplikasi yang dibuat dengan php procedural untuk kebutuhan pembelajaran.
+Framework sederhana yang dibangun dengan konsep oop-less, cocok untuk tahap pembelajaran.
 
 ### Dokumentasi
 * [Struktur Aplikasi](docs/structure.md)
