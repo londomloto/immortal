@@ -96,6 +96,12 @@ function append_url($url, $query) {
     $param1 = array();
     $param2 = array();
 
+    // PHP 4: undefined index `path`
+    if ( ! isset($parsed['path'])) {
+        $uri = $_SERVER['REQUEST_URI'];
+        $parsed['path'] = substr($uri, 0, strpos($uri, '?'));
+    }
+
     if (isset($parsed['query'])) {
         $parsed['query'] = xss_protect_query($parsed['query']);
         parse_str($parsed['query'], $param1);
