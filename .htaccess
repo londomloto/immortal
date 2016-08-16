@@ -1,6 +1,6 @@
 <IfModule mod_rewrite.c>
 RewriteEngine on
-RewriteBase /
+RewriteBase /immortal/
 RewriteCond $1 !^(index\.php|assets|docs)
 RewriteRule ^(.*)$ index.php?/$1 [L]
 </IfModule>
