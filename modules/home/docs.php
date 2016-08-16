@@ -1,5 +1,5 @@
 <?php echo breadcrumb(); ?>
-<h1>Dokumentasi</h1>
+<h1><?php _e('Documentation'); ?></h1>
 
 <div class="nav-tabs-horizontal">
     <ul role="tablist" data-plugin="nav-tabs" class="nav nav-tabs nav-tabs-line">

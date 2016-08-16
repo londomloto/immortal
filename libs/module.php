@@ -59,8 +59,7 @@ function init_module($module) {
             }
         }
     } else {
-        // show_404("Halaman $module tidak ditemukan !");
-        show_404(sprintf(__("Page %s doesn't found!"), $module));
+        show_404(sprintf(__("Page %s does not found!"), $module));
     }
 
     return get_module($module);

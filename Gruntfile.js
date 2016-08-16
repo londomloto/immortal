@@ -5,8 +5,8 @@ module.exports = function(grunt) {
     grunt.initConfig({
         pot: {
             options: {
-                text_domain: 'id_ID',
-                dest: './i18n/languages/',
+                text_domain: 'app',
+                dest: './i18n/languages/id_ID/LC_MESSAGES/',
                 keywords: [
                     '__:1',
                     '_e:1'

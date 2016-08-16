@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: immortal 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-08-16 06:25+0700\n"
+"POT-Creation-Date: 2016-08-16 23:20+0700\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -29,7 +29,11 @@ msgstr ""
 msgid "Internal Server Error !"
 msgstr ""
 
-#: libs/module.php:63
+#: libs/module.php:62
 #, php-format
-msgid "Page %s doesn't found!"
+msgid "Page %s does not found!"
+msgstr ""
+
+#: modules/home/docs.php:2
+msgid "Documentation"
 msgstr ""

@@ -1,11 +1,19 @@
 <?php
 
 function load_textdomain() {
-    $locale = 'id_ID'; // 'id_ID.UTF-8'; // get_config('locale');
-    //var_dump(setlocale(LC_ALL, $locale));
+    $locale = get_config('locale');
+    $encoding = 'UTF-8';
+
+    if (defined('LC_MESSAGES')) {
+        setlocale(LC_MESSAGES, $locale);
+    } else {
+        putenv("LC_ALL=$locale");    
+    }
+    
     bindtextdomain('app', LANGDIR);
+    bind_textdomain_codeset('app', $encoding);
+    
     textdomain('app');
-    bind_textdomain_codeset('app', 'UTF-8');
 }
 
 function __($message) {
