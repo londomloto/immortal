@@ -36,7 +36,9 @@ return array(
     'suffix' => '.xyz',
     'charset' => 'UTF-8',
     'urlchars' => 'a-z 0-9~%.:_\-',
+    'locale' => 'id_ID',
     'autoload' => array(
+        'translation',
         'database',
         'pagination'
     ),

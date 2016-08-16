@@ -68,9 +68,9 @@ function get_error_name($level) {
 
 function get_http_error($code) {
     $maps = array(
-        403 => 'Access Denied !',
-        404 => 'Page Not Found !',
-        500 => 'Internal Server Error !'
+        403 => __('Access Denied !'),
+        404 => __('Page Not Found !'),
+        500 => __('Internal Server Error !')
     );
     return isset($maps[$code]) ? $maps[$code] : "Error $code";
 }
