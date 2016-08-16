@@ -1,7 +1,7 @@
 <?php
 
 function load_textdomain() {
-    $locale = 'INDONESIA'; // 'id_ID.UTF-8'; // get_config('locale');
+    $locale = 'id_ID'; // 'id_ID.UTF-8'; // get_config('locale');
     //var_dump(setlocale(LC_ALL, $locale));
     bindtextdomain('app', LANGDIR);
     textdomain('app');
