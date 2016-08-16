@@ -1,6 +1,10 @@
 <IfModule mod_rewrite.c>
 RewriteEngine on
+<<<<<<< HEAD
 RewriteBase /github/immortal/
+=======
+RewriteBase /immortal/
+>>>>>>> 4e6021c45c54efe87690a92c6a08e60a9f9eaded
 RewriteCond $1 !^(index\.php|assets|docs)
 RewriteRule ^(.*)$ index.php?/$1 [L]
 </IfModule>
