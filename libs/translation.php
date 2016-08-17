@@ -7,7 +7,7 @@ function load_textdomain() {
     if (defined('LC_MESSAGES')) {
         setlocale(LC_MESSAGES, $locale);
     } else {
-        putenv("LC_ALL=$locale");    
+        putenv("LC_ALL=$locale");
     }
     
     bindtextdomain('app', LANGDIR);

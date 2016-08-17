@@ -49,7 +49,7 @@ function init_module($module) {
                 if (is_ajax()) {
                     echo json_encode(array(
                         'success' => false,
-                        'message' => 'Sesi Anda telah habis !',
+                        'message' => __('Your session has been expired !'),
                         'redirect'=> site_url($modcfg->redirect)
                     ));
                     exit();
@@ -59,7 +59,7 @@ function init_module($module) {
             }
         }
     } else {
-        show_404(sprintf(__("Page %s does not found!"), $module));
+        show_404(sprintf(__('Page %s does not found!'), $module));
     }
 
     return get_module($module);

@@ -11,7 +11,8 @@ switch($_SERVER['SERVER_ADMIN']) {
             'load' => true
         );
     break;
-
+    
+    case 'roso@dev.vm':    
     case 'supernova@dev.local':
         $database = array(
             'host' => 'localhost',
@@ -21,7 +22,6 @@ switch($_SERVER['SERVER_ADMIN']) {
             'load' => true
         );
     break;
-
 }
 
 return array(
